@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- all layout files begin with this node -->
+<layout>
+    <miniorange_2factor_customer_index_validationpage>
+        <reference name="content">
+			<block 	type="MiniOrange_2factor/mo2fConfig" name="miniorange_2factor_mo2fConfig" template="miniorange_2factor/customerLogin.phtml" />
+        </reference>
+    </miniorange_2factor_customer_index_validationpage>
+	
+	<customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="MiniOrange_2factor"  ifconfig="miniOrange/twofactor/customer/enable">
+                <name>miniOrange Two Factor</name>
+                <path>twofactorauth/Index/configureTwoFactorPage</path>
+                <label>Two Factor Configuration</label>
+            </action>
+        </reference>
+    </customer_account>
+	
+	<customer_account_login>
+        <reference name="customer_form_login">
+            <block type="core/text_list" name="form.additional.info">
+                <block type="MiniOrange_2factor/mo2fConfig" name="miniorange_2factor_mo2fConfig" template="miniorange_2factor/customerRBA.phtml" after="-" ifconfig="miniOrange/twofactor/customer/rmd_enable"/>
+            </block>
+        </reference>
+    </customer_account_login>
+	
+	<miniorange_2factor_customer_index_configuretwofactorpage>
+	 <update handle="customer_account"/>
+		<reference name="content">
+            <block type="MiniOrange_2factor/mo2fConfig"  name="miniorange_2factor_mo2fConfig"
+                  template="miniorange_2factor/mo2fConfig.phtml" />
+        </reference>
+    </miniorange_2factor_customer_index_configuretwofactorpage>
+    
+    <miniorange_2factor_customer_inlineregistration_index>
+    <remove name="header"/>
+		<reference name="content">
+            <block type="MiniOrange_2factor/mo2fConfig"  name="miniorange_2factor_mo2fConfig"
+                  template="miniorange_2factor/inlineRegistration.phtml" />
+        </reference>
+    </miniorange_2factor_customer_inlineregistration_index>
+	
+</layout>

@@ -1,0 +1,254 @@
+<head>
+	<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/css/MiniOrange_2factor/frontLogin.css'; ?>"></link>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript">jQuery.noConflict()</script>
+	<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/frontLogin.js'; ?>"></script>
+	<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/sliderScript.js'; ?>"></script>
+</head>
+<body>
+	<form name="f" id="backto_mo_loginform" method="post" action="<?php echo $this->miniorange_geturl('*/*/authenticationFailed') ?>" hidden>
+		 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+	</form>
+	<form name="f" id="mobile_validation_form" method="post" action="<?php echo $this->miniorange_geturl('*/*/validateUser') ?>">
+		 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+	</form>	
+	
+	<?php if(!Mage::getSingleton('customer/session')->getshowRBAScreen()){?>
+	<div id="loginScreen"> 
+		<div class="panel-content">	
+			<div class="login-header">
+				<a id="cancel" href="#">&times;</a>
+			</div>
+			<div class="login-content">
+				<center>
+					<a id="logo" href="#loginScreen"><img id="logo-miniorange" src="<?php echo $this->getImage('miniorange_logo'); ?>"/></a>
+				</center>
+				<?php if( Mage::getSingleton('customer/session ')->getminiError()){?>
+				<div id="messages">
+                        <ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo  Mage::getSingleton('customer/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>                    
+				</div>
+				<?php }?>
+				<?php if(Mage::getSingleton('customer/session')->getLoginQRCode()){?>
+				<div id="QrCode" class="form">
+					<center><a id="slide" data-option="1" href="#slider1">« See How it Works »</a></center>
+					<div id="showQrCode">
+						<center> <img src="data:image/jpg;base64,<?php echo Mage::getSingleton('customer/session')->getLoginQRCode() ?>"/></center>
+					</div>
+					<div id="features">
+						<center>
+							<a class="" style="padding-right:24%;" id="offlinebutton" href="#softoken">Phone is Offline?</a>
+							<a class="" id="forgotphonebutton" href="#">Forgot your Phone?</a>
+						</center>
+					</div>
+				</div>
+				<?php }else if(Mage::getSingleton('customer/session')->getshowsofttoken()){?>
+				<div id="softoken">
+						<center><a id="slide" data-option="2" href="#slider2">« See How it Works »</a></center><br/>
+						<div class="label"><span><?php echo Mage::helper('customer')->__('Soft Token:') ?></span></div><br/>
+						<center>
+						 <form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/sofTokenEntered') ?>" id="authform" autocomplete="off">
+							 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+							 <input type="number" name="softtoken" autofocus="true"  id="softokeninput" title="6 Digit Soft Token" placeholder="Enter Soft Token using miniOrange Authenticator App" pattern="[0-9]{6}"/><br/>
+							 <input type="submit" class="button" id="softtoken-button"  value="<?php echo Mage::helper('customer')->__('Submit') ?>" /><br/>
+						</form>
+						 <a class="links" style="padding-right:24%;" id="goBacklogin" href="#QrCode">« Back to Login</a>
+						<a class="links" id="forgotphonebutton" href="#">Forgot Your Phone?</a>
+						</center>
+				</div>
+				<?php }else if(Mage::getSingleton('customer/session')->getshowforgotphone()){?>
+				<div id="forgotPhone">
+						<center><a id="slide" data-option="3" href="#slider3" >« See How it Works »</a></center><br/>
+						<div class="label"><span><?php echo Mage::helper('customer')->__('OTP:') ?></span></div><br/>
+						<center>
+						 <form method="post" action="<?php echo $this->miniorange_geturl('*/*/enteredForgetPhone') ?>" id="authform" autocomplete="off">
+							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+							<input type="number" name="forgotPhoneOtp" autofocus="true"  id="forgotPhoneOtp" placeholder="Enter OTP sent to <?php echo Mage::getSingleton('customer/session')->getshowEmail() ?>." class="required-entry input-text" pattern="[0-9]{4,6}"/><br/>
+							<input type="submit" class="button" id="forgotPhone-button"  value="<?php echo Mage::helper('customer')->__('Submit') ?>" /><br/>
+							 <a class="" id="goBacklogin" href="#">« Back to Login</a>
+						</form>
+						</center>
+				</div>
+				<?php }else if(Mage::getSingleton('customer/session')->getshowotpscreen() || Mage::getSingleton('customer/session')->getphoneverification()  || Mage::getSingleton('customer/session')->getShowGAScreen()){?>
+				<div style="margin-top:7%;" id="otpoversms">
+						<!--<center><a id="slide" href="#slider2">« See How it Works »</a></center><br/>-->
+						<?php if(!Mage::getSingleton('customer/session')->getShowGAScreen()){?>
+						<div class="label"><span><?php echo Mage::helper('customer')->__('Enter OTP:') ?></span></div><br/>
+						<?php }else{?>
+							<div class="label"><span><?php echo Mage::helper('customer')->__('Enter Token:') ?></span></div><br/>
+						<?php }?>
+						<center>
+						 <form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/enteredOTPPhone') ?>" id="authform" autocomplete="off">
+							 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+							<?php if(Mage::getSingleton('customer/session')->getshowotpscreen()){?>
+							<input type="number" name="smsotp" autofocus="true" id="softokeninput" title="6 Digit Soft Token" placeholder="Enter OTP sent to <?php echo  Mage::getSingleton('customer/session')->getshowPhone()?>" pattern="[0-9]{4,6}"/><br/>
+							<?php }else if(Mage::getSingleton('customer/session')->getphoneverification()){?>
+							<input type="number" name="smsotp" autofocus="true" id="softokeninput" title="6 Digit Soft Token" placeholder="Enter the OTP. We will call you on <?php echo  Mage::getSingleton('customer/session')->getshowPhone()?>." pattern="[0-9]{4,6}"/><br/>
+							<?php }else{?>
+								<input type="number" name="customergatoken" autofocus="true" id="softokeninput" title="Google Authenticator Token" placeholder="Enter the Token for your Account from Google Authenticator." pattern="[0-9]{4,6}"/><br/>
+							<?php }?>
+							 <input type="submit" class="button" id="smsotp-button"  value="<?php echo Mage::helper('customer')->__('Submit') ?>" /><br/>
+						</form>
+						 <a class="links" style="padding-right:24%;" id="goBacklogin" href="#">« Back to Login</a>
+						<a class="links" id="forgotphonebutton" href="#">Forgot Phone?</a>
+						</center>
+				</div>
+				<?php }else if(Mage::getSingleton('customer/session')->getpushnotification() || Mage::getSingleton('customer/session')->getoutofband()){?>
+				<div id="outofbandpush">
+						<!--<center><a id="slide2" href="#slider2">« See How it Works »</a></center><br/>-->						
+							<?php if(Mage::getSingleton('customer/session')->getpushnotification()){?>
+								<div class="label-progressBar"><span id="label-progressBarWait"><h3><?php echo Mage::helper('customer')->__('A Push Notification has been sent to your registered device. Waiting for Approval.') ?></h3></span></div>
+							<?php }else{?>
+								<div class="label-progressBar"><span id="label-progressBarWait"><h3><?php echo Mage::helper('customer')->__('A Email has been sent to '.$this->showEmail().'. Waiting for Approval.') ?></h3></span></div>
+							<?php }?>
+						<center>
+						<span id="progress_bar"></span>
+						<form name="f" method="post" id="mo2f_denied_transaction" action="<?php echo $this->miniorange_geturl('*/*/deniedTransaction') ?>" autocomplete="off">
+							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+						</form>
+						<?php if(Mage::getSingleton('customer/session')->getpushnotification()){?>
+						<a class="links" style="padding-right:24%;" id="offlinebutton" href="#softoken">Phone is Offline?</a>
+						<a class="links" id="forgotphonebutton" href="#">Forgot Phone?</a>
+						<?php }else{?>
+							<a class="links" id="goBacklogin" href="#">« Back to Login</a>
+						<?php }?>
+						</center>
+				</div>
+				<?php }else if(Mage::getSingleton('customer/session')->getShowKBAScreen()){?>
+				<div id="kbaSection">
+					<h4>Validate Security Questions</h4>
+					<div id="mo_kba_title">
+						<h4>Please answer the questions below.</h4>
+					</div>
+					<div id="mo2f_kba_content" style="text-align:left;padding:0 3%;">
+					   <form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/validateKBAAnswers') ?>" id="kbaform" autocomplete="off">
+						<h5><?php
+							print_r(Mage::getSingleton('customer/session')->getKBAQuestion1());
+						?></h5>
+						<input class="mo2f_kba_textbox" type="text" name="mo2f_answer_1" id="mo2f_answer_1" required="true" autofocus="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." style="width:100%;">
+						<h5><?php
+							print_r(Mage::getSingleton('customer/session')->getKBAQuestion2());
+						?></h5>
+						<input class="mo2f_kba_textbox" type="text" name="mo2f_answer_2" id="mo2f_answer_2" required="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." style="width:100%">
+						<br><center><input type="submit" class="button" name="kba-submit" id="kba-button"  value="<?php echo Mage::helper('customer')->__('Submit') ?>" /><br/>
+						<a class="links" id="goBacklogin" href="#">« Back to Login</a></center>
+						</form>
+					 </div>
+				</div>
+				<?php }?>
+				<div class="progressBar center" id="progressBar">
+						<div class="label-progressBar"><span id="label-progressBar"><h3><?php echo Mage::helper('customer')->__('Processing your request. Please Wait!') ?></h3></span>
+						<span id="label-progressBar-forgotphone"><h3><?php $email = Mage::getSingleton('customer/session')->getshowEmail();
+															echo Mage::helper('customer')->__('Sending OTP to '.$email.'. Please Wait!')?></h3></span></div>
+						<span id="progress_bar"></span>
+				</div>
+				<form name="f" method="post" id="enableforgotphone" action="<?php echo $this->miniorange_geturl('*/*/enableForgotPhone') ?>">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>
+				<form name="f" method="post" id="enablesofttoken" action="<?php echo $this->miniorange_geturl('*/*/enableSoftToken') ?>">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>
+				<form name="f" method="post" id="authenticationfailed" action="<?php echo $this->miniorange_geturl('*/*/authenticationFailed') ?>">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>
+				<form name="f" method="post" id="goBackLogin" action="<?php echo $this->miniorange_geturl('*/*/goBackLogin') ?>">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>				
+				<div class="collapse" id="">
+					<a class="goBackPreview" data-slider="1" href="#">« Go Back</a>
+					<div id="slider1">
+					  <div  class="control_next" data-slider="1"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>
+					  <div  class="control_prev" data-slider="1"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>	  
+					  <div class="control_info" data-slider="1"></div>
+					<ul data-slider="1">					  
+						<li data-pos="2" data-slider="1"><img src='<?php echo $this->getImage('frontend_mobile'); ?>' /></li>	
+						<li data-pos="3" data-slider="1"><img src='<?php echo $this->getImage('frontend_mobile2'); ?>' /></li>										
+					  </ul>  
+					</div>
+					  <a  class="goBackPreview" data-slider="2" href="#">« Go Back</a>
+					<div id="slider2">
+					  <div  class="control_next" data-slider="2"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>
+					  <div  class="control_prev" data-slider="2"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>	  
+					  <div class="control_info" data-slider="2"></div>
+					  <ul data-slider="2">
+						<li data-pos="1" data-slider="2"><img src='<?php echo $this->getImage('frontend_phoneoffline'); ?>' /></li>					
+						<li data-pos="2" data-slider="2"><img src='<?php echo $this->getImage('frontend_softtoken'); ?>' /></li>										
+					  </ul>  
+					</div>
+					   <a class="goBackPreview" data-slider="3" href="#">« Go Back</a>
+					<div id="slider3">
+					  <div  class="control_next" data-slider="3"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>
+					  <div  class="control_prev" data-slider="3"><img src='<?php echo $this->getImage('arrow'); ?>' /></div>	 
+					  <div class="control_info" data-slider="3"></div>
+					 <ul data-slider="3">							
+						<li data-pos="1" data-slider="3"><img src='<?php echo $this->getImage('frontend_forgotphonelink'); ?>' /></li>		
+						<li data-pos="2" data-slider="3"><img src='<?php echo $this->getImage('frontend_forgotphone'); ?>' /></li>		
+						<li data-pos="3" data-slider="3"><img src='<?php echo $this->getImage('frontend_forgotphone2'); ?>' /></li>	
+					 </ul>  
+					</div>
+				</div>	
+			</div>
+			<div class="login-footer">
+				<script>var tranxId = "<?php echo Mage::getSingleton('adminhtml/session')->getLogintxtId() ?>";</script>
+				<script>var transId = "<?php echo Mage::getSingleton('adminhtml/session')->getLoginWaitId() ?>";</script>
+				<script>var postUrl = "<?php echo Mage::helper('MiniOrange_2factor')->getHostURl()?>/moas/api/auth/auth-status";</script>
+				<script>var url1 = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/right.png'; ?>";</script>
+				<script>var url2 ="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/wrong.png'; ?>";</script>
+				<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/loginMobilePolling.js'; ?>"></script>
+				<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/loginPushPolling.js'; ?>"></script>
+			</div>
+		</div>	
+	</div>
+	<?php }else{?>
+		<div id="loginScreen"> 
+			<div class="panel-content">	
+					<div class="login-header">
+					</div>
+					<div class="login-content" id="rbadevice" style="height:79%;">
+						<h2 style="padding-top:5%;">Remember Device</h2>
+						<div id="mo_rba_device">
+							<div id="mo_device_title" style="margin-bottom:6%;padding-top:3%;">
+							<center>
+							<h3>Do you want to remember this device?</h3>
+							</center>
+							</div>
+							<center>
+								<input type="button" name="miniorange_trust_device_yes" onclick="mo_check_device_confirm();" class="button" style="background: green;border-color: green;" value="Yes" />
+								<input type="button" name="miniorange_trust_device_no" onclick="mo_check_device_cancel();"   class="button" style="background: rgb(247, 38, 38);border-color: rgb(247, 38, 38);" value="No" />
+							</center>
+							<br /><br />
+							<center>
+								<span>
+									Click on <i><b>Yes</b></i> if this is your personal device.<br />
+									Click on <i><b>No</b></i> if this is a public device.
+								</span>
+							</center>
+							<br /><br />
+							 <a class="" id="goBacklogin" href="#">« Back to Login</a>
+						</div>
+						<div class="progressBar center" id="progressBar">
+								<div class="label-progressBar">
+								<span id="label-progressBar"><h3><?php echo Mage::helper('customer')->__('Processing Your Request. Please Wait!') ?></h3></span>
+								</div>
+								<br/>
+								<span id="progress_bar"></span>
+						</div>
+					</div>
+					<div class="login-footer">
+						<script>
+							function mo_check_device_confirm(){$j('#mo2f_device_content').hide();$j('#mo_rba_device').hide();$j('#progressBar').show();$j('#mo2f_trust_device_confirm_form').submit();}
+							function mo_check_device_cancel(){$j('#mo2f_device_content').hide();$j('#mo_rba_device').hide();$j('#progressBar').show();$j('#mo2f_trust_device_cancel_form').submit();}
+						</script>
+					</div>
+			</div>
+		</div>
+		  <form name="f" id="mo2f_trust_device_confirm_form" method="post" action="<?php echo $this->miniorange_geturl('*/*/trustDeviceConfirm') ?>">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		  </form>
+		  <form name="f" id="mo2f_trust_device_cancel_form" method="post" action="<?php echo $this->miniorange_geturl('*/*/trustDeviceCancel') ?>">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		  </form>
+		  <form name="f" method="post" id="goBackLogin" action="<?php echo $this->miniorange_geturl('*/*/goBackLogin') ?>">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		  </form>	
+	<?php }?>
+</body>

@@ -44,34 +44,20 @@
     <!--[if lt IE 7]> <link rel="stylesheet" href="<?php echo $this->getSkinUrl('below_ie7.css') ?>" type="text/css" media="all" /> <![endif]-->
     <!--[if IE 7]> <link rel="stylesheet" href="<?php echo $this->getSkinUrl('ie7.css') ?>" type="text/css" media="all" /> <![endif]-->
 	
-	<style>
-		.label,.label-progressBar{font-weight:700;font-size:15px}#error-cancel,#slide1,#slide2,#slide3,.button,.login-header a,.login-header a:hover{text-decoration:none}.miniorange-password,.miniorange-username{display:inline;float:left;width:50%}#miniorange-button{margin-top:1%;float:right}#logo-miniorange{width:44%;margin-left:2%;margin-top:2%}#loginScreen,.center{text-align:center;width:100%}.center{display:table}#showQrCode{margin:5%}#loginScreen{position:fixed;top:0;left:0;height:100%;z-index:10;display:none;background-color:rgba(0,0,0,.5)}.label{float:left}.login-content{height:84%}.login-footer,.login-header{padding:1%;position:relative;height:6%;background:#D0D0D0}.login-header{border-radius:7px 7px 0 0;font-size:18px;font-weight:700}.login-footer{border-radius:0 0 7px 7px}.login-header a{float:right;cursor:pointer;font-size:20px;padding:1%}.login-header a:hover{color:#F0F}.form a{margin-bottom:4%;text-align:center;display:table-cell;vertical-align:middle}.button{padding:8px 40px;cursor:pointer;font-size:14px}.panel-content{width:450px;height:400px;margin:-250px auto 0 -220px;position:absolute;left:50%;top:50%;z-index:100;overflow:visible;background-color:#fff;border-radius:7px;box-shadow:4px 4px 3px #484848}.form #email{float:left;width:100%}.progressBar{display:none;margin:0 auto;position:absolute}#label-progressBar,#label-progressBar-forgotphone{margin:2% 0;font-size:15px}#forgotPhone,#softoken{display:none;padding:5%}.info{font-size:15px;margin-bottom:3%;color:#ea7601}#forgotPhoneOtp,#softokeninput{display:block;margin:0;width:100%;font-family:sans-serif;font-size:13px}#forgotPhone-button,#softtoken-button{margin-bottom:8%;font-size:15px;padding:8px 20px;text-decoration:none;text-shadow:0 1px 0 #b23e35;border-radius:3px;border:1px solid #000;display:inline-block;cursor:pointer;color:#fff;background-color:#f7934d}input[type=number],textarea{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;border:1px solid #c2c2c2;box-shadow:1px 1px 4px #ebebeb;-moz-box-shadow:1px 1px 4px #ebebeb;-webkit-box-shadow:1px 1px 4px #ebebeb;border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;padding:7px;outline:0;width:100%}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield}td>input:focus,textarea:focus{border:1px solid #ff8500}#forgotphoneform,#softokenform{margin-top:1%;float:left;width:100%}#slider2>ul>li>img,#slider3>ul>li>img,#slider>ul>li>img{left:0}#slider,#slider2,#slider3{position:relative;overflow:hidden;padding-top:5%;display:none}#slider2>ul,#slider3>ul,#slider>ul{position:relative;margin:0;padding:0;height:200px;list-style:none}#slider2>ul>li,#slider3>ul>li,#slider>ul>li{position:relative;display:block;float:left;margin:0;padding:0;width:450px;height:260px;text-align:center}.control_info,.control_next,.control_prev{position:absolute;z-index:999;cursor:pointer}.control_prev{left:0;top:49%;transform:rotate(180deg)}.control_next{right:0;top:50%}#goBack1,#goBack2,#goBack3{display:none;font-size:14px;position:absolute;right:34%}#slide1,#slide2,#slide3{cursor:pointer;font-size:14px}.mini-messages li{display:none;margin:0 5%;min-height:23px!important;padding:4px 0 1px 8px!important;font-weight:700!important;text-align:left}#error-cancel{color:red;font-size:21px;float:right}
-	</style>
+	<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/css/MiniOrange_2factor/adminLogin.css'; ?>"></link>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript">jQuery.noConflict()</script>
-	<script> 
-		$j=jQuery.noConflict();$j(document).ready(function(){$forgotphone="<?php echo Mage::getSingleton('adminhtml/session')->getshowforgotphone(); ?>";$softtoken="<?php echo Mage::getSingleton('adminhtml/session')->getshowsofttoken(); ?>";$error='<?php echo Mage::getSingleton('adminhtml/session')->getminiError(); ?>';$openedinphone='<?php echo Mage::getSingleton('adminhtml/session')->getPhoneOpen(); ?>'
-		if($openedinphone=="1"){$softtoken='1';$j("#goBack").css("display","none");}
-		$j("#label-progressBar").css("display","block");$j("#label-progressBar-forgotphone").css("display","none");if($forgotphone=="1"){$j("#loginScreen").css("display","block");$j("#QrCode").css("display","none");$j("#softoken").css("display","none");$j("#forgotPhone").css("display","block");if($error!=""){$j(".error-msg span").empty();$j(".error-msg span").append($error);$j(".mini-messages li").css("display","block");}}
-		if($softtoken=="1"){$j("#loginScreen").css("display","block");$j("#QrCode").css("display","none");$j("#forgotPhone").css("display","none");$j("#softoken").css("display","block");if($error!=""){$j(".error-msg span").empty();$j(".error-msg span").append($error);$j(".mini-messages li").css("display","block");}}
-		$j('#error-cancel').click(function(){$error="";$j(".mini-messages li").css("display","none");});$j("#cancel").click(function(){$j("#softoken").css("display","none");$j("#QrCode").css("display","block");$j("#loginScreen").css("display","none");$j(".mini-messages li").css("display","none");});$j("#offlinebutton").click(function(){$j("#QrCode").css("display","none");$j("#forgotPhone").css("display","none");$j("#softoken").css("display","block");$j(".mini-messages li").css("display","none");});$j("#forgotphonebutton1").click(function(){$j("#QrCode").css("display","none");$j("#softoken").css("display","none");$j("#label-progressBar").css("display","none");$j("#label-progressBar-forgotphone").css("display","block");$j("#progressBar").css("display","block");$j("#enableforgotphone").submit();$j(".mini-messages li").css("display","none");});$j("#forgotphonebutton2").click(function(){$j("#QrCode").css("display","none");$j("#softoken").css("display","none");$j("#label-progressBar").css("display","none");$j("#label-progressBar-forgotphone").css("display","block");$j("#progressBar").css("display","block");$j("#enableforgotphone").submit();$j(".mini-messages li").css("display","none");});$j("#goBack").click(function(){$j("#softoken").css("display","none");$j("#forgotPhone").css("display","none");$j("#QrCode").css("display","block");$j(".mini-messages li").css("display","none");});$j("#softtoken-button").click(function(){$j("#softoken").css("display","none");$j("#progressBar").css("display","block");$j("#label-progressBar").css("display","block");$j("#label-progressBar-forgotphone").css("display","none");$j(".mini-messages li").css("display","none");});$j("#forgotPhone-button").click(function(){$j("#forgotPhone").css("display","none");$j("#label-progressBar-forgotphone").css("display","none");$j("#progressBar").css("display","block");$j(".mini-messages li").css("display","none");});$j("#gobacklogin").click(function(){$j("#label-progressBar-forgotphone").css("display","none");$j("#disableforgotphone").submit();$j(".mini-messages li").css("display","none");});$j("#slide1").click(function(){$j("#QrCode").css("display","none");$j("#softoken").css("display","none");$j("#slider").css("display","block");$j("#logo").hide();$j("#goBack1").css("display","block");$j(".mini-messages li").css("display","none");});$j("#goBack1").click(function(){$j("#slider").css("display","none");$j("#logo").show();$j("#QrCode").css("display","block");$j("#goBack1").css("display","none");});$j("#slide2").click(function(){$j("#softoken").css("display","none");$j("#slider2").css("display","block");$j("#logo").hide();$j(".mini-messages li").css("display","none");$j("#goBack2").css("display","block");});$j("#goBack2").click(function(){$j("#slider2").css("display","none");$j("#logo").show();$j("#softoken").css("display","block");$j("#goBack2").css("display","none");});$j("#slide3").click(function(){$j("#forgotPhone").css("display","none");$j("#slider3").css("display","block");$j("#logo").hide();$j(".mini-messages li").css("display","none");$j("#goBack3").css("display","block");});$j("#goBack3").click(function(){$j("#slider3").css("display","none");$j("#logo").show();$j("#forgotPhone").css("display","block");$j("#goBack3").css("display","none");});$showloginscreen="<?php echo Mage::getSingleton('adminhtml/session')->getWelcomeMessage() ?>";if($showloginscreen=="1"){$j("#loginScreen").css("display","block");}});
-	</script>
-	<script>
-		var poll="<?php echo Mage::getSingleton('adminhtml/session')->getWelcomeMessage() ?>";if(poll=="1"){var $t=jQuery.noConflict();var timeout;function pollMobileValidation()
-		{var transId="<?php echo Mage::getSingleton('adminhtml/session')->getLogintxtId() ?>";var jsonString="{\"txId\":\""+transId+"\"}";var postUrl="<?php echo Mage::helper('MiniOrange_2factor')->getHostURl()?>/moas/api/auth/auth-status";$t.ajax({url:postUrl,type:"POST",dataType:"json",data:jsonString,contentType:"application/json; charset=utf-8",success:function(result){var status=JSON.parse(JSON.stringify(result)).status;if(status=='SUCCESS'){var content="<div id='success'><center><img src='"+"<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/right.png'; ?>"+"'/></center></div>";$t("#showQrCode").empty();$t("#showQrCode").append(content);setTimeout(function(){$t("#QrCode").hide();$t("#features").hide();$t("#progressBar").show();$t("#mobile_validation_form").submit();},1000);}else if(status=='ERROR'||status=='FAILED'){var content="<div id='error'><center><img src='"+"<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/wrong.png'; ?>"+"' /></center></div>";$t("#showQrCode").empty();$t("#features").hide();$t("#showQrCode").append(content);setTimeout(function(){$t('#backto_mo_loginform').submit();},1000);}else{timeout=setTimeout(pollMobileValidation,3000);}}});}
-		pollMobileValidation();}
-	</script>
-	<script>
-		var $j=jQuery.noConflict();$j(document).ready(function($j){var slideCount=$j('#slider ul li').length;var slideWidth=$j('#slider ul li').width();var slideHeight=$j('#slider ul li').height();var sliderUlWidth=slideCount*slideWidth;$j('#slider').css({width:slideWidth,height:slideHeight});$j('#slider ul').css({width:sliderUlWidth,marginLeft:-slideWidth});$j('#slider ul li:last-child').prependTo('#slider ul');function moveLeft(){$j('#slider ul').fadeOut("slow",function(){$j('#slider ul li:last-child').prependTo('#slider ul');$j('#slider ul').css('left','');$j('#slider ul').fadeIn("slow");});};function moveRight(){$j('#slider ul').fadeOut("slow",function(){$j('#slider ul li:first-child').appendTo('#slider ul').fadeIn("slow");$j('#slider ul').css('left','');$j('#slider ul').fadeIn("slow");});};$j('#slider .control_prev').click(function(){moveLeft();});$j('#slider .control_next').click(function(){moveRight();});});$j(document).ready(function($j){var slideCount=$j('#slider2 ul li').length;var slideWidth=$j('#slider2 ul li').width();var slideHeight=$j('#slider2 ul li').height();var sliderUlWidth=slideCount*slideWidth;$j('#slider2').css({width:slideWidth,height:slideHeight});$j('#slider2 ul').css({width:sliderUlWidth,marginLeft:-slideWidth});$j('#slider2 ul li:last-child').prependTo('#slider2 ul');function moveLeft(){$j('#slider2 ul').fadeOut("slow",function(){$j('#slider2 ul li:last-child').prependTo('#slider2 ul').fadeIn("slow");$j('#slider2 ul').css('left','');$j('#slider2 ul').fadeIn("slow");});};function moveRight(){$j('#slider2 ul').fadeOut("slow",function(){$j('#slider2 ul li:first-child').appendTo('#slider2 ul').fadeIn("slow");$j('#slider2 ul').css('left','');$j('#slider2 ul').fadeIn("slow");});};$j('#slider2 .control_prev').click(function(){moveLeft();});$j('#slider2 .control_next').click(function(){moveRight();});});$j(document).ready(function($j){var slideCount=$j('#slider3 ul li').length;var slideWidth=$j('#slider3 ul li').width();var slideHeight=$j('#slider3 ul li').height();var sliderUlWidth=slideCount*slideWidth;$j('#slider3').css({width:slideWidth,height:slideHeight});$j('#slider3 ul').css({width:sliderUlWidth,marginLeft:-slideWidth});$j('#slider3 ul li:last-child').prependTo('#slider3 ul');function moveLeft(){$j('#slider3 ul').fadeOut("slow",function(){$j('#slider3 ul li:last-child').prependTo('#slider3 ul').fadeIn("slow");$j('#slider3 ul').css('left','');$j('#slider3 ul').fadeIn("slow");});};function moveRight(){$j('#slider3 ul').fadeOut("slow",function(){$j('#slider3 ul li:first-child').appendTo('#slider3 ul').fadeIn("slow");$j('#slider3 ul').css('left','');$j('#slider3 ul').fadeIn("slow");});};$j('#slider3 .control_prev').click(function(){moveLeft();});$j('#slider3 .control_next').click(function(){moveRight();});});	
-	</script>
+	<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/adminLogin.js'; ?>"></script>
+	<!--Slider Script-->
+	<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/sliderScript.js'; ?>"></script>
 </head>
 <body id="page-login" onload="document.forms.loginForm.username.focus();">
     <div class="login-container">
         <div class="login-box">
             <form method="post" action="" id="loginForm" autocomplete="off">
                 <div class="login-form">
-			
                     <input name="form_key" type="hidden" value="" />
+                    <input name="miniorange_rba_attribures" id="miniorange_rba_attribures" type="hidden" value=""/>
                     <h2><?php echo Mage::helper('adminhtml')->__('Log in to Admin Panel') ?></h2>
                     <div id="messages">
                         <?php echo $this->getMessagesBlock()->toHtml() ?>
@@ -83,6 +69,8 @@
                         <input type="text" class="input-text no-display" name="dummy" id="dummy" />
                         <input type="password" id="login" name="miniorange-password" class="required-entry input-text" value="" /></div>
                     <?php echo $this->getChildHtml('form.additional.info'); ?>
+					<?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('backend_login')->setImgWidth(230)->setImgHeight(50)->toHtml();?>
+					<?php echo $this->getLayout()->createBlock('MiniOrange_Openid/moOpenidConfig')->setTemplate('miniorange_openid/login.phtml')->toHtml() ?>
                     <div class="clear"></div>
                     <div class="form-buttons">
                         <a class="left" href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/index/forgotpassword', array('_nosecret' => true)) ?>"><?php echo Mage::helper('adminhtml')->__('Forgot your password?') ?></a>
@@ -98,13 +86,15 @@
     </div>
 	
 	<form name="f" id="backto_mo_loginform" method="post" action="" hidden>
-		<input type="hidden" name="miniorange_mobile_validation_failed" value="" />
+		<input type="hidden" name="miniorange_mobile_validation_failed" value="1" />
 	</form>
 	<form name="f" id="mobile_validation_form" method="post" action="">
-		<input type="hidden" name="miniorange_mobile_validation_Username" value="<?php echo Mage::getSingleton('adminhtml/session')->getLoginUsername() ?>" />
-		<input type="hidden" name="miniorange_mobile_validation_Password" value="<?php echo Mage::getSingleton('adminhtml/session')->getLoginPassword() ?>" />
+		<input type="hidden" name="miniorange_mobile_validation_success" value="1" />
 	</form>
+	
 	<!-- Our login popup-->
+	<?php if(!Mage::getSingleton('adminhtml/session')->getshowRBAScreen()){?>
+		<?php if(Mage::getSingleton('adminhtml/session')->getShowLoginScreen()){?>
 		<div id="loginScreen"> 
 		<div class="panel-content">	
 			<div class="login-header">
@@ -115,120 +105,243 @@
 					<a id="logo" href="#loginScreen"><img id="logo-miniorange" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/miniorange_logo.png'; ?>"/></a>
 				</center>
 				<div id="messages">
-                        <ul class="mini-messages"><li class="error-msg"><ul><li><span></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>                    
+						<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+                        <ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+						<?php }?>	
 				</div>
+				<?php if(Mage::getSingleton('adminhtml/session')->getLoginQRCode()){?>
 				<div id="QrCode" class="form">
-					<center><a id="slide1" href="#slider">« See How it Works »</a></center>
+					<center><a id="slide" data-option="1" href="#slider1">« See How it Works »</a></center>
 					<div id="showQrCode">
 						<center> <img src="data:image/jpg;base64,<?php echo Mage::getSingleton('adminhtml/session')->getLoginQRCode(); ?>"/></center>
 					</div>
 					<div id="features">
 						<center>
 							<a class="button" id="offlinebutton" href="#softoken">Phone is Offline?</a>
-							<a class="button" id="forgotphonebutton1" href="#">Forgot your Phone?</a>
+							<a class="button" id="forgotphonebutton" href="#">Forgot your Phone?</a>
 						</center>
 					</div>
 				</div>
+				<?php }else if(Mage::getSingleton('adminhtml/session')->getshowsofttoken()){?>
 				<div id="softoken">
-						<center><a id="slide2" href="#slider2">« See How it Works »</a></center><br/>
+						<center><a id="slide" data-option="2" href="#slider2">« See How it Works »</a></center><br/>
 						<div class="label"><span><?php echo Mage::helper('adminhtml')->__('Soft Token:') ?></span></div><br/>
 						<center>
-						 <form name="f" method="post" action="" id="softokenform" autocomplete="off">
-							 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
-							 <input type="number" name="softtoken" autofocus="true"  id="softokeninput" title="6 Digit Soft Token" placeholder="Enter Soft Token using miniOrange Authenticator App" pattern="[0-9]{6}"/><br/>
+						 <form name="f" method="post" action="" id="authform" autocomplete="off">
+							 <input type="number" name="softtoken" autofocus="true" id="softokeninput" title="6 Digit Soft Token" placeholder="Enter Soft Token using miniOrange Authenticator App" pattern="[0-9]{4,6}"/><br/>
 							 <input type="hidden" name="softoken_entered" value="softoken_entered" />
 							 <input type="submit" id="softtoken-button"  value="<?php echo Mage::helper('adminhtml')->__('Submit') ?>" /><br/>
 						</form>
-						 <a class="button" id="goBack" href="#QrCode">« Scan Qr Code</a>
-						<a class="button" id="forgotphonebutton2" href="#">Forgot Phone?</a>
+						 <a class="button" id="goBack" href="#">« Go Back</a>
+						<a class="button" id="forgotphonebutton" href="#">Forgot Phone?</a>
 						</center>
 				</div>
-				<form name="f" method="post" id="enableforgotphone" action="">
-					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
-					<input type="hidden" name="enable_forgot_phone" value="enable_forgot_phone" />
-				</form>
-				<form name="f" method="post" id="disableforgotphone" action="">
-					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
-					<input type="hidden" name="disable_forgot_phone" value="disable_forgot_phone" />
-				</form>
+				<?php }else if(Mage::getSingleton('adminhtml/session')->getshowforgotphone()){?>
 				<div id="forgotPhone">
-						<center><a id="slide3" href="#slider3">« See How it Works »</a></center><br/>
+						<center><a id="slide" data-option="3" href="#slider3">« See How it Works »</a></center><br/>
 						<div class="label"><span><?php echo Mage::helper('adminhtml')->__('OTP:') ?></span></div><br/>
 						<center>
-						 <form method="post" action="" id="loginform" autocomplete="off">
-							 <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
-							 <input type="number" name="forgotPhoneOtp" autofocus="true"  id="forgotPhoneOtp" placeholder="Enter OTP sent to <?php echo Mage::getSingleton('adminhtml/session')->getshowEmail() ?>." class="required-entry input-text" pattern="[0-9]{4,6}"/><br/>
+						 <form method="post" action="" id="authform" autocomplete="off">
+							 <input type="number" name="forgotPhoneOtp" autofocus="true" id="forgotPhoneOtp" placeholder="Enter OTP sent to <?php echo Mage::getSingleton('adminhtml/session')->getshowEmail() ?>." class="required-entry input-text" pattern="[0-9]{4,6}"/><br/>
 							 <input type="hidden" name="forgotPhoneOtp_entered" value="forgotPhoneOtp_entered" />
 							<input type="submit" id="forgotPhone-button"  value="<?php echo Mage::helper('adminhtml')->__('Submit') ?>" /><br/>
-							 <a class="button" id="gobacklogin" href="#">« Back to Login</a>
+							 <a class="button" id="goBack" href="#">« Back to Login</a>
 						</form>
 						</center>
 				</div>
-				<div class="progressBar center" id="progressBar">
-						<div class="label-progressBar"><span id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing your request. Please Wait!') ?></span>
-						<span id="label-progressBar-forgotphone"><?php 
-																	$email = Mage::getSingleton('adminhtml/session')->getshowEmail();
-																	echo Mage::helper('adminhtml')->__('Sending OTP to '.$email.'. Please Wait!') 
-																?></span>
-						</div>
-						<br/>
-						<span 
-							style=" background:url('http://auth.miniorange.com/moas/images/ajax-loader4.gif')no-repeat; 
-									display:block; 
-									margin: 0 auto;
-									height:140px; 
-									width:140px">
-						</span>
+				<?php }else if(Mage::getSingleton('adminhtml/session')->getshowotpscreen() || Mage::getSingleton('adminhtml/session')->getphoneverification() || Mage::getSingleton('adminhtml/session')->getShowGAScreen()){?>
+				<div id="otpoversms">
+						<!--<center><a id="slide2" href="#slider2">« See How it Works »</a></center><br/>-->
+						<?php if(!Mage::getSingleton('adminhtml/session')->getShowGAScreen()){?>
+							<div class="label"><span><?php echo Mage::helper('adminhtml')->__('Enter OTP:') ?></span></div><br/>
+						<?php }else{?>
+							<div class="label"><span><?php echo Mage::helper('adminhtml')->__('Enter Token:') ?></span></div><br/>
+						<?php }?>
+						<center>
+						 <form name="f" method="post" action="" id="authform" autocomplete="off">
+							<?php if(Mage::getSingleton('adminhtml/session')->getshowotpscreen()){?>
+								<input type="number" name="smsotp" autofocus="true" id="softokeninput" title="6 Digit Soft Token" placeholder="Enter OTP sent to <?php echo  Mage::getSingleton('adminhtml/session')->getshowPhone()?>" pattern="[0-9]{4,6}"/><br/>
+							<?php }else if(Mage::getSingleton('adminhtml/session')->getphoneverification()){?>
+								<input type="number" name="smsotp" autofocus="true" id="softokeninput" title="6 Digit Soft Token" placeholder="Enter the OTP. We will call you on <?php echo  Mage::getSingleton('adminhtml/session')->getshowPhone()?>." pattern="[0-9]{4,6}"/><br/>
+							<?php }else{?>
+								<input type="number" name="gatoken" autofocus="true" id="softokeninput" title="Google Authenticator Token" placeholder="Enter the Token for your Account from Google Authenticator." pattern="[0-9]{4,6}"/><br/>
+							<?php }?>
+							 <input type="hidden" name="smsotp_entered" value="smsotp_entered" />
+							 <input type="submit" id="smsotp-button"  value="<?php echo Mage::helper('adminhtml')->__('Submit') ?>" /><br/>
+						</form>
+						 <a class="button" id="goBack" href="#">« Go Back</a>
+						<a class="button" id="forgotphonebutton" href="#">Forgot Phone?</a>
+						</center>
 				</div>
-				
-				
+				<?php }else if(Mage::getSingleton('adminhtml/session')->getpushnotification() || Mage::getSingleton('adminhtml/session')->getoutofband()){?>
+				<div id="outofbandpush">
+						<!--<center><a id="slide2" href="#slider2">« See How it Works »</a></center><br/>-->
+						<center>
+						<?php if(Mage::getSingleton('adminhtml/session')->getpushnotification()){?>
+						<div class="label-progressBarWait"><h3><?php echo Mage::helper('adminhtml')->__('A Push Notification has been sent to your registered device. Waiting for Approval.') ?></h3></div>
+						<?php }else{?>
+						<div class="label-progressBarWait"><h3><?php echo Mage::helper('adminhtml')->__('A Email has been sent to '.Mage::getSingleton('adminhtml/session')->getShowEmail().'. Waiting for Approval.') ?></h3></div>
+						<?php }?>
+						<div class="progressBarWait center" id="progressBarWait"><span id="progress_bar"></span></div>
+						<form name="f" method="post" id="mo2f_denied_transaction" autocomplete="off">
+							<input type="hidden" name="denied_transaction" value="denied_transaction" />
+						</form>
+						<?php if(Mage::getSingleton('adminhtml/session')->getpushnotification()){?>
+						<a class="button" id="offlinebutton" href="#softoken">Phone is Offline?</a>
+						<a class="button" id="forgotphonebutton" href="#">Forgot Phone?</a>
+						<?php }else{?>
+							<a class="button" id="goBack" href="#">« Go Back</a>
+						<?php }?>
+						</center>
+				</div>
+				<?php }else if(Mage::getSingleton('adminhtml/session')->getShowKBAScreen()){?>
+				<div id="kbaSection">
+					<h2>Validate Security Questions</h2>
+					<div id="mo_kba_title">
+						<h3>Please answer the questions below.</h3>
+					</div>
+					<div id="mo2f_kba_content" style="text-align:left;padding:3%;">
+					   <form name="f" method="post" action="" id="kbaform" autocomplete="off">
+						<h4><?php
+							print_r(Mage::getSingleton('adminhtml/session')->getKBAQuestion1());
+						?></h4>
+						<input class="mo2f_kba_textbox" type="text" name="mo2f_answer_1" id="mo2f_answer_1" required="true" autofocus="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." style="margin-bottom:2%;">
+						<h4><?php
+							print_r(Mage::getSingleton('adminhtml/session')->getKBAQuestion2());
+						?></h4>
+						<input class="mo2f_kba_textbox" type="text" name="mo2f_answer_2" id="mo2f_answer_2" required="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." style="margin-bottom:1%;">
+						<br><input type="submit" name="kba-submit" id="kba-button"  value="<?php echo Mage::helper('adminhtml')->__('Submit') ?>" /><br/>
+						<center><a class="button" id="goBack" href="#">« Back to Login</a></center>
+						</form>
+					 </div>
+				</div>
+				<?php }?>
+				<div class="progressBar center" id="progressBar">
+					<div class="label-progressBar"><span id="label-progressBar"><h3><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></h3></span>
+					<span id="label-progressBar-forgotphone"><h3><?php $email = Mage::getSingleton('adminhtml/session')->getshowEmail();echo Mage::helper('adminhtml')->__('Sending OTP to '.$email.'. Please Wait!');?></h3></span>
+					</div><br/><span id="progress_bar"></span>
+				</div>
+				<form name="f" method="post" id="enablesofttoken" action="">
+					<input type="hidden" name="enable_soft_token" value="enable_soft_token" />
+				</form>
+				<form name="f" method="post" id="gobacktologin" action="">
+					<input type="hidden" name="goback_to_login" value="goback_to_login" />
+				</form>
+				<form name="f" method="post" id="enableforgotphone" action="">
+					<input type="hidden" name="enable_forgot_phone" value="enable_forgot_phone" />
+				</form>
 				<div class="collapse" id="">
-					<div id="slider">
-					  <div  class="control_next"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
-					  <div  class="control_prev"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	  
-					  <ul>	
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/login2.png'; ?>' /></li>					  
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/authenticate.png'; ?>' /></li>	
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/mobilescan.png'; ?>' /></li>
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/authvalidate.png'; ?>' /></li>					
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/login3.png'; ?>' /></li>											
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/processing.png'; ?>' /></li>											
-						<li><img  style="height:26%; position: relative; top: 44%"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/loggedin.png'; ?>' /></li>											
-					  </ul>  
+					<?php if(Mage::getSingleton('adminhtml/session')->getLoginQRCode()){?>
+						<a class="button goBackPreview"  data-slider="1" href="#">« Go Back</a>
+					<div id="slider1">
+					  <div  class="control_next" data-slider="1"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
+					  <div  class="control_prev" data-slider="1"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	  
+					  <div class="control_info" data-slider="1"></div>
+					  <ul  data-slider="1">	
+						<li data-pos="1" data-slider="1"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/login2.png'; ?>' /></li>					  				
+						<li data-pos="2" data-slider="1"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/login3.png'; ?>' /></li>											
+						</ul>  
 					</div>
-					<a class="button" id="goBack1" href="#">« Go Back</a>
+					<?php }else if(Mage::getSingleton('adminhtml/session')->getshowsofttoken()){?>
+						<a class="button goBackPreview" data-slider="2" href="#">« Go Back</a>
 					<div id="slider2">
-					  <div  class="control_next"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
-					  <div  class="control_prev"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	  
-					  <ul>
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/phone-offline.png'; ?>' /></li>					
-						<li><img  style="height: 85%;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/settings.png'; ?>' /></li>					
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/sync.png'; ?>' /></li>					
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/softokenmobile.png'; ?>' /></li>	
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/softtoken.png'; ?>' /></li>	
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/processing.png'; ?>' /></li>											
-						<li><img  style="height:26%; position: relative; top: 44%"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/loggedin.png'; ?>' /></li>							
+					  <div  class="control_next" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
+					  <div  class="control_prev" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	  
+					  <div class="control_info" data-slider="2"></div>
+					 <ul data-slider="2">
+						<li data-pos="1" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/phone-offline.png'; ?>' /></li>					
+						<li data-pos="2" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/settings.png'; ?>' /></li>					
+						<li data-pos="3" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/sync.png'; ?>' /></li>						
+						<li data-pos="4" data-slider="2"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/softtoken.png'; ?>' /></li>						
 					  </ul>  
 					</div>
-					  <a class="button" id="goBack2" href="#">« Go Back</a>
+					  <?php }else if(Mage::getSingleton('adminhtml/session')->getshowforgotphone()){?>
+					  	<a class="button goBackPreview" data-slider="3" href="#">« Go Back</a>
 					<div id="slider3">
-					  <div  class="control_next"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
-					  <div  class="control_prev"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	 
-					  <ul>							
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/forgot-phone.png'; ?>' /></li>		
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/sendingotp.png'; ?>' /></li>		
-						<li><img  style="width: 80%; position: relative; top: 35%"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/mail.png'; ?>' /></li>	
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/forgotphone.png'; ?>' /></li>										
-						<li><img  style="height: inherit;"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/processing.png'; ?>' /></li>											
-						<li><img  style="height:26%; position: relative; top: 44%"  src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/loggedin.png'; ?>' /></li>	
-					 </ul>  
+					  <div  class="control_next" data-slider="3"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>
+					  <div  class="control_prev" data-slider="3"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/arrow.png'; ?>' /></div>	 
+					  <div class="control_info" data-slider="3"></div>
+					  <ul data-slider="3">							
+						<li data-pos="1" data-slider="3"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/forgot-phone.png'; ?>' /></li>		
+						<li data-pos="2" data-slider="3"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/sendingotp.png'; ?>' /></li>		
+						<li data-pos="3" data-slider="3"><img src='<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/forgotphone.png'; ?>' /></li>										
+					</ul>  
 					</div>
-					 <a class="button" id="goBack3" href="#">« Go Back</a>
+					  <?php }?>
 				</div>	
 			</div>
-			<div class="login-footer"></div>
+			<div class="login-footer">
+				<script>var tranxId = "<?php echo Mage::getSingleton('adminhtml/session')->getLogintxtId() ?>";</script>
+				<script>var transId = "<?php echo Mage::getSingleton('adminhtml/session')->getLoginWaitId() ?>";</script>
+				<script>var postUrl = "<?php echo Mage::helper('MiniOrange_2factor')->getHostURl()?>/moas/api/auth/auth-status";</script>
+				<script>var url1 = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/right.png'; ?>";</script>
+				<script>var url2 ="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/wrong.png'; ?>";</script>
+				<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/loginMobilePolling.js'; ?>"></script>
+				<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/loginPushPolling.js'; ?>"></script>
+			</div>
 		</div>	
 		</div>
-	</div>
+		<?php }?>
+		
+		<?php }else{?>
+		<div id="loginScreen"> 
+		<div class="panel-content">	
+				<div class="login-header">
+				</div>
+				<div class="login-content">
+					<h2 style="padding-top:5%;">Remember Device</h2>
+					<div id="mo_rba_device">
+						<div id="mo_device_title" style="margin-bottom:6%;padding-top:3%;">
+						<center>
+						<h3>Do you want to remember this device?</h3>
+						</center>
+						</div>
+						<center>
+							<input type="button" name="miniorange_trust_device_yes" onclick="mo_check_device_confirm();" class="miniorange_trust_device_button" style="background: green;border-color: green;" value="Yes" />
+							<input type="button" name="miniorange_trust_device_no" onclick="mo_check_device_cancel();"  class="miniorange_trust_device_button" style="background: rgb(247, 38, 38);border-color: rgb(247, 38, 38);" value="No" />
+						</center>
+						<br /><br />
+						<center>
+							<span>
+								Click on <i><b>Yes</b></i> if this is your personal device.<br />
+								Click on <i><b>No</b></i> if this is a public device.
+							</span>
+						</center>
+						<br /><br />
+						<a class="button" id="goBack" href="#">« Go Back</a>
+					</div>
+					<div class="progressBar center" id="progressBar">
+							<div class="label-progressBar">
+							<span id="label-progressBar"><h3><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></h3></span>
+							</div>
+							<br/>
+							<span id="progress_bar"></span>
+					</div>
+				</div>
+				<div class="login-footer">
+					<script>
+						function mo_check_device_confirm(){$j('#mo2f_device_content').hide();$j('#mo_rba_device').hide();$j('#progressBar').show();$j('#mo2f_trust_device_confirm_form').submit();}
+						function mo_check_device_cancel(){$j('#mo2f_device_content').hide();$j('#mo_rba_device').hide();$j('#progressBar').show();$j('#mo2f_trust_device_cancel_form').submit();}
+					</script>
+				</div>
+			</div>
+		  </div>
+		  <form name="f" id="mo2f_trust_device_confirm_form" method="post" action="">
+				<input type="hidden" name="mo2f_trust_device_confirm" value="mo2f_trust_device_confirm" />
+		  </form>
+		  <form name="f" id="mo2f_trust_device_cancel_form" method="post" action="">
+			<input type="hidden" name="mo2f_trust_device_cancel" value="mo2f_trust_device_cancel" />
+		  </form>
+		<?php }?>
+			<script>var relPath = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor'; ?>';</script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/jquery.flash.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/ua-parser.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/client.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/device_attributes.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/swfobject.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/fontdetect.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/murmurhash3.js'; ?>"></script>
+			<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/miniorange-fp.js'; ?>"></script>
+			<script>$j('#loginForm').on('submit', function(e){$j('#miniorange_rba_attribures').val(JSON.stringify(rbaAttributes.attributes));});</script>
 </body>
 </html>

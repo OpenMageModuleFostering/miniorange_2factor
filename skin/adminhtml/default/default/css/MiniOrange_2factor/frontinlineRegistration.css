@@ -1,0 +1,322 @@
+.btn-link,
+.button {
+    cursor: pointer
+}
+
+.label-progressBar {
+    margin-top: 3%
+}
+
+#error-cancel,
+.button,
+.login-header a,
+.login-header a:hover {
+    text-decoration: none
+}
+
+#miniorange-button {
+    margin-top: 1%;
+    float: right
+}
+
+#logo-miniorange {
+    width: 44%;
+    margin-left: 3%;
+    margin-top: 2%
+}
+
+#loginScreen,
+.center {
+    text-align: center;
+    width: 100%
+}
+
+.center {
+    display: table
+}
+
+#loginScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 1)
+}
+
+.label {
+    font-weight: 700;
+    font-size: 15px;
+    float: left;
+    padding-left: 5%
+}
+
+.login-content {
+    height: 79%;
+    padding: 3%
+}
+
+.login-footer,
+.login-header {
+    padding: 1%;
+    position: relative;
+    height: 10%;
+    background: #D0D0D0
+}
+
+.login-header {
+    border-radius: 7px 7px 0 0;
+    font-size: 18px;
+    font-weight: 700;
+    height: 11%
+}
+
+.login-footer {
+    border-radius: 0 0 7px 7px
+}
+
+.form a {
+    margin-bottom: 4%;
+    text-align: center;
+    vertical-align: middle
+}
+
+#displayQrCode img,
+.progressBar {
+    margin: 0 auto
+}
+
+.button {
+    padding: 8px 39px;
+    font-size: 14px
+}
+
+.mo2f_kba_table {
+    width: 100%
+}
+
+.panel-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+    overflow: visible;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 4px 4px 3px #484848
+}
+
+#configurephonescreen,
+#setup_start {
+    width: 560px;
+    height: 400px;
+    margin: -210px auto 0 -280px
+}
+
+#configureMobileScreen,
+#kbaauthscreen {
+    width: 845px;
+    height: 505px;
+    margin: -250px auto 0 -420px
+}
+
+#googleauthenticatorscreen {
+    width: 913px;
+    height: 605px;
+    margin: -305px auto 0 -470px
+}
+
+.form #email {
+    float: left;
+    width: 100%
+}
+
+.progressBar {
+    display: none
+}
+
+#label-progressBar,
+#label-progressBar-forgotphone,
+#label-progressBarWait {
+    margin: 2% 0;
+    font-size: 15px
+}
+
+#forgotPhoneOtp,
+#rbadevice,
+#smsotp,
+#softokeninput {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 13px
+}
+
+#forgotPhone-button,
+#smsotp-button,
+#softtoken-button {
+    margin-bottom: 8%
+}
+
+select {
+    height: 30px
+}
+
+input[type=number],
+input[type=text],
+select,
+textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    box-shadow: 1px 1px 4px #ebebeb;
+    -moz-box-shadow: 1px 1px 4px #ebebeb;
+    -webkit-box-shadow: 1px 1px 4px #ebebeb;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    outline: 0;
+    width: 100%
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0
+}
+
+input[type=number] {
+    -moz-appearance: textfield
+}
+
+input:focus,
+textarea:focus {
+    border: 1px solid #39c
+}
+
+.mo2f_kba_tb_data {
+    padding: 1% 3%
+}
+
+#authform {
+    margin-top: 1%;
+    width: 100%;
+    padding: 0 5%
+}
+
+input[type=radio] {
+    margin-right: 1%
+}
+
+#radio {
+    margin-bottom: 1%
+}
+
+#displayQrCode {
+    background: #F7F7F7;
+    border-radius: 4px;
+    height: 200px;
+    margin: 1%;
+    padding: 3%
+}
+
+#showQrCode {
+    margin: auto;
+    text-align: center
+}
+
+.intl-number-input input {
+    height: 30px;
+    padding-left: 40px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    -moz-box-shadow: 1px 1px 4px #ebebeb;
+    -webkit-box-shadow: 1px 1px 4px #ebebeb;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    outline: 0
+}
+
+.mini-messages {
+    margin-bottom: 1%
+}
+
+.mini-messages li {
+    margin: 0 5%;
+    min-height: 23px!important;
+    padding: 2px 0 1px 8px!important;
+    font-weight: 700!important;
+    text-align: left;
+    font-size: 12px
+}
+
+.error-msg {
+    border: 1px solid #F16048!important;
+    color: #DF280A!important;
+    background: url("<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/error_msg_icon.gif'; ?>") 8px 5px no-repeat #FAEBE7!important;
+    border-radius: 2px
+}
+
+#error-cancel {
+    color: red;
+    font-size: 14px;
+    float: right;
+    margin-top: -2px
+}
+
+#progress_bar {
+    background: url(http://auth.miniorange.com/moas/images/ajax-loader4.gif) no-repeat;
+    display: block;
+    margin: 3% auto;
+    height: 140px;
+    width: 140px
+}
+
+form[name="f"] {
+    margin-bottom: 3%
+}
+
+#QrCode,
+#configurephone,
+#downloadscreen,
+#twofactorlist,
+.ga_section form {
+    text-align: left
+}
+
+#mo2f_android_div,
+#mo2f_blackberry_div,
+#mo2f_iphone_div {
+    text-align: left;
+    padding-top: 3%
+}
+
+.panel-body {
+    background-color: #E0E0E0;
+    padding: 1% 0 1% 2%;
+    border-right: 1px solid #fff
+}
+
+.ga_section {
+    float: left;
+    min-height: 430px;
+    padding: 1%;
+    font-size: 12px
+}
+
+#ga_heading {
+    text-align: center;
+    font-size: 15px
+}
+
+#ga_phone {
+    margin-top: 5%
+}
+
+.collapse {
+    display: none
+}

@@ -1,0 +1,135 @@
+<!--
+***************************************************************************************************
+
+									CONFIGURE GOOGLE AUTHENTICATOR
+
+***************************************************************************************************	
+-->
+<div id="ga_table">
+	<div class="ga_section">
+		<span id="ga_heading"><h3>STEP-1: SELECT PHONE TYPE</h3></span><hr />
+		<form name="f" method="post" id="mo2f_app_type_ga_form" action="<?php echo $this->miniorange_geturl('*/*/selectGAPhone') ?>" >
+			<div id="ga_phone"><input type="radio" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+				value="ANDROID" <?php if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"ANDROID")==0) echo 'checked'?> /> <b>Android</b></div>
+			<div id="ga_phone"><input type="radio" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+				value="IPHONE" <?php if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"IPHONE")==0) echo 'checked'?> /> <b>iPhone</b></div>
+			<div id="ga_phone"><input type="radio" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+				value="BLACKBERRY" <?php if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"BLACKBERRY")==0) echo 'checked'?> /> <b>BlackBerry</b></div>
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		</form><br><br>
+		<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/goBackTwoFactor') ?>" id="">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<input type="submit" name="back" id="back_btn" class="button" value="Go Back"/>
+		</form>
+	</div>
+	<div class="ga_section" >
+		<span id="ga_heading"><h3>STEP-2: SETUP GOOGLE AUTHENTICATOR</h3></span><hr>
+		<?php if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"ANDROID")==0){?>
+		<div id="mo2f_android_div" >
+		<h4>Install the Google Authenticator App for Android.</h4>
+		<ol>
+			<li>1. On your phone,Go to Google Play Store.</li>
+			<li>2. Search for <b>Google Authenticator.</b>
+			<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Download from the Google Play Store and install the application.</a>
+			</li>
+		</ol><br>
+		<h4>Now open and configure Google Authenticator.</h4>
+		<ol>
+			<li>1. In Google Authenticator, touch Menu and select "Set up account."</li>
+			<li>2. Select "Scan a barcode". Use your phone's camera to scan this barcode.</li>
+		<center><br><div id="" ><?php echo '<img src="data:image/jpg;base64,' . $this->getGAData('QR') . '" />'; ?></div></center>
+		<br></ol>
+		<span class="btn-link" href="" style="font-size:15px;"><b>Can't scan the barcode? </b></span>
+		<div class="collapse" id="mo2f_scanbarcode_a">
+			<ul>
+				<li>1. In Google Authenticator, touch Menu and select "Set up account."</li>
+				<li>2. Select "Enter provided key"</li>
+				<li>3. In "Enter account name" type your full email address.</li>
+				<li>4. In "Enter your key" type your secret key:</li>
+					<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+						<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+						<?php echo $this->getGAData('secret'); ?>
+						</div>
+						<div style="font-size: 80%;color: #666666;">
+						Spaces don't matter.
+						</div>
+					</div>
+				<li>5. Key type: make sure "Time-based" is selected.</li>
+				<li>6. Tap Add.</li>
+			</ul>
+		</div>
+		</div>
+		<?php }else if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"IPHONE")==0){?>
+		<div id="mo2f_iphone_div" >
+		<h4>Install the Google Authenticator app for iPhone.</h4>
+		<ol>
+			<li>1. On your iPhone, tap the App Store icon.</li>
+			<li>2. Search for <b>Google Authenticator.</b>
+			<a href="http://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">Download from the App Store and install it</a>
+			</li>
+		</ol><br/>
+		<h4>Now open and configure Google Authenticator.</h4>
+		<ol>
+			<li>1. In Google Authenticator, tap "+", and then "Scan Barcode."</li>
+			<li>2. Use your phone's camera to scan this barcode.
+				<center><br><div id="" ><?php echo '<img src="data:image/jpg;base64,' . $this->getGAData('QR') . '" />'; ?></div></center>
+			</li>
+		</ol><br/>
+		<span class="btn-link" href="" style="font-size:15px;"><b>Can't scan the barcode? </b></span>
+		<div class="collapse" id="mo2f_scanbarcode_a_i">
+			<ul>
+				<li>1. In Google Authenticator, tap +.</li>
+				<li>2. Key type: make sure "Time-based" is selected.</li>
+				<li>3. In "Account" type your full email address.</li>
+				<li>4. In "Key" type your secret key:</li>
+					<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+						<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+						<?php echo $this->getGAData('secret'); ?>
+						</div>
+						<div style="font-size: 80%;color: #666666;">
+						Spaces don't matter.
+						</div>
+					</div>
+				<li>5. Tap Add.</li>
+			</ul>
+		</div>
+		</div>
+		<?php }else if(strcmp(Mage::getSingleton('customer/session')->getGAPhone(),"BLACKBERRY")==0){?>
+		<div id="mo2f_blackberry_div">
+		<h4>Install the Google Authenticator app for BlackBerry</h4>
+		<ol>
+			<li>1. On your phone, open a web browser.Go to <b>m.google.com/authenticator.</b></li>
+			<li>2. Download and install the Google Authenticator application.</li>
+		</ol>
+		<h4>Now open and configure Google Authenticator.</h4>
+		<ul>
+			<li>1. In Google Authenticator, select Manual key entry.</li>
+			<li>2. In "Enter account name" type your full email address.</li>
+			<li>3. In "Enter key" type your secret key:</li>
+				<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+					<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+					<?php echo $this->getGAData('secret'); ?>
+					</div>
+					<div style="font-size: 80%;color: #666666;">
+					Spaces don't matter.
+					</div>
+				</div>
+			<li>4. Choose Time-based type of key.</li>
+			<li>5. Tap Save.</li>
+		</ul>
+		</div>
+		<?php }?>
+	</div>
+	<div class="ga_section" >
+		<span id="ga_heading"><h3>STEP-3:VERIFY AND SAVE</h3></span><hr>
+		<div style="<?php echo !is_null(Mage::getSingleton('customer/session')->getGAPhone()) ? 'display:block' : 'display:none'; ?>">
+		<div>Once you have scanned the barcode, enter the 6-digit verification code generated by the Authenticator app</div><br/>
+		<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/validateGAToken') ?>" >
+			<b>Code: </b>
+			<input type="text" class="mo2f_table_textbox" autofocus="true" required="true"  name="google_token" placeholder="Enter Code from Google Authenticator"/>
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<input type="submit" name="validate" id="validate" class="button button-primary button-large" style="margin-left:5%;"value="Verify and Save" />
+		</form>
+		</div>
+	</div>
+</div>

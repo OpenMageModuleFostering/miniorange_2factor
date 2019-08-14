@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- The root node for Magento module configuration -->
+<config>
+    <!-- The module's node contains basic information about each Magento module -->
+    <modules>
+        <!-- This must exactly match the namespace and module's folder names, with directory separators replaced by underscores -->
+        <MiniOrange_2factor>
+            <!-- The version of our module -->
+            <version>1.1.0</version>
+        </MiniOrange_2factor>
+    </modules>
+	<!-- We are making changes to the frontend -->
+	<frontend>
+       <routers>
+          <MiniOrange_2factor_customer>
+			<use>standard</use>
+              <args>
+				 <module>MiniOrange_2factor_Customer</module>
+                    <frontName>twofactorauth</frontName>
+              </args>
+           </MiniOrange_2factor_customer>
+		   <customer>
+                <args>
+                    <modules>
+                        <MiniOrange_2factor before="Mage_Customer">MiniOrange_2factor_Customer_Login</MiniOrange_2factor>
+                    </modules>
+                </args>
+            </customer>
+       </routers>
+	   <layout>
+	   <updates>
+			<miniOrange_2factor_layout>
+				 <file>MiniOrange_2factor_layout.xml</file>
+			 </miniOrange_2factor_layout>
+		</updates>
+		</layout>
+    </frontend>
+	<!-- we are making changes to the backend -->
+	<admin>
+	 <routers>
+		<!-- Adding our module to the admin page-->
+		<adminhtml> 
+			<args>
+			    <modules>
+						<MiniOrange_2factor after="Mage_Adminhtml">MiniOrange_2factor_Adminhtml_Login</MiniOrange_2factor>							
+                </modules>
+			</args>
+		 </adminhtml>
+		 <miniorange_2factor>
+			<use>admin</use>
+			<args>
+			   <module>MiniOrange_2factor</module>
+			   <frontName>twofactor</frontName>
+			</args>
+		 </miniorange_2factor>
+	  </routers>
+	 </admin>
+	 <adminhtml>
+	   <layout>
+		  <updates>
+			  <miniorange_2factor_admin_layout>
+				  <file>miniorange_2factor_admin.xml</file>
+			   </miniorange_2factor_admin_layout>
+		  </updates>
+	   </layout>
+	   <!-- Adding a tab to the admin navbar -->
+	   <menu>
+	    <miniOrange translate="title" module="MiniOrange_2factor">
+            <title>miniOrange</title>
+            <sort_order>81</sort_order>
+            <children>
+                <configure_extension translate="title" module="MiniOrange_2factor">
+					   <title>Two Factor Configuration</title>
+					   <sort_order>1</sort_order>
+					   <action>miniorange_2factor/adminhtml_index</action>
+				</configure_extension>
+            </children>
+        </miniOrange>
+		</menu>	
+		<acl>        
+			<resources>            
+				<admin>                
+					<children>                    
+						<miniOrange translate="title" module="MiniOrange_2factor">							
+							<title>miniOrange</title>							
+							<sort_order>81</sort_order>                        
+							<children>                            
+								<configure_extension translate="title" module="MiniOrange_2factor">								   
+									<title>Two Factor Configuration</title>								   
+									<sort_order>1</sort_order>							
+								</configure_extension>                        
+							</children>                    
+						</miniOrange>                
+					</children>            
+				</admin>        
+			</resources>		
+		</acl>
+	</adminhtml>
+	
+	<!-- Configure our module's behavior in the global scope -->
+    <global>
+       <models>
+           <customer>
+               <rewrite>
+                   <session>MiniOrange_2factor_Model_Session</session>
+               </rewrite>
+           </customer>
+       </models>
+        <models>
+            <MiniOrange_2factor>
+                <class>MiniOrange_2factor_Model</class>
+            </MiniOrange_2factor>
+        </models>
+		<!-- Definition of our blocks -->
+        <blocks>
+            <MiniOrange_2factor>  
+                <class>MiniOrange_2factor_Block</class>
+            </MiniOrange_2factor>
+        </blocks>
+		<!-- Declaration for the helper class-->
+		<helpers>
+			<MiniOrange_2factor>
+				<class>MiniOrange_2factor_Helper</class>
+			</MiniOrange_2factor>
+		</helpers>  
+        <!-- Defining our event observer -->
+        <events>				
+			<controller_action_predispatch>
+                <observers>
+                    <miniorange_2factor_login>
+                        <class>MiniOrange_2factor/Observer</class>
+                        <method>controllerActionPredispatch</method>
+                    </miniorange_2factor_login>
+                </observers>
+            </controller_action_predispatch>
+			<admin_user_authenticate_before>
+                <observers>
+                    <captcha>
+                        <class>MiniOrange_2factor/observer</class>
+                        <method>checkUserLoginBackend</method>
+                    </captcha>
+                </observers>
+            </admin_user_authenticate_before>			
+			<customer_login>
+				<observers>
+					<miniorange_login>
+						<class>MiniOrange_2factor/Observer</class>
+						<method>customerLogin</method>
+					</miniorange_login>
+				</observers>
+			</customer_login>
+			<miniorange_2factor_validate>
+                <observers>
+                    <miniorange_login_authenticated>
+                        <type>singleton</type>
+                        <class>MiniOrange_2factor/Observer</class>
+                        <method>customerAuthenticateAfter</method>
+                    </miniorange_login_authenticated>
+                </observers>
+            </miniorange_2factor_validate>
+            <miniorange_2factor_inline_registration>
+            	<observers>
+                    <miniorange_inline_registration>
+                        <type>singleton</type>
+                        <class>MiniOrange_2factor/Observer</class>
+                        <method>customerInlineRegistration</method>
+                    </miniorange_inline_registration>
+                </observers>
+            </miniorange_2factor_inline_registration>
+			<customer_login_status>
+			  <observers>
+				<MiniOrange_2factor_customer_login_status>
+				  <type>singleton</type>
+				  <class>MiniOrange_2factor/Observer</class>
+				  <method>checkStatus</method>
+				</MiniOrange_2factor_customer_login_status>
+			  </observers>
+			</customer_login_status>
+        </events>
+        <!-- Defining our resources -->
+		 <resources>
+            <MiniOrange_2factor_setup>
+                <setup>
+                    <module>MiniOrange_2factor</module>
+                </setup>
+            </MiniOrange_2factor_setup>
+        </resources>
+    </global>
+</config>

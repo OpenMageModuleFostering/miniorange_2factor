@@ -1,0 +1,34 @@
+<!--
+***************************************************************************************************
+
+										CONFIGURE PHONE
+
+***************************************************************************************************	
+-->
+<div id="phonevalidation">
+	<div class="mo2f_table_layout">
+		<div><h3>VERIFY YOUR PHONE</h3><hr></div>	
+		<form name="f" method="post" id="OtpOverSms" action="<?php echo $this->miniorange_geturl('*/*/configurePhone') ?>">
+			<table class="">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<tr>
+				<td><b><font color="#FF0000">*</font>Phone number:</b></td>
+				<td><input class="" type="text" name="phone" id="phone" required title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="<?php echo $this->getConfig('miniorange_phone')?>" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/></td>
+			</tr>
+			</table>
+			<input type="submit" name="submit" style="margin-left:2%;margin-bottom:3%;" value="Verify" class="button button-primary button-large" />
+		</form>
+		<form name="f" method="post" id="verifyOtpOverSms" action="<?php echo $this->miniorange_geturl('*/*/verifyPhone') ?>">
+			<table class="">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<tr>
+				<td style="width:23%;"><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+				<td><input class="" id="validateotp" autofocus="true" type="number" name="otp" placeholder="Enter OTP sent to the number above." pattern="[0-9]{4,6}"/></td>
+			</tr>
+			</table>
+			<input type="submit" name="submit" style="margin-left:2%;" value="Validate" class="button button-primary button-large" />
+			<input type="submit" name="submit"  value="Resend OTP" class="button button-primary button-large" />
+			<input type="submit" name="submit"  value="Go Back" class="button button-primary button-large" />
+		</form>
+	</div>
+</div>

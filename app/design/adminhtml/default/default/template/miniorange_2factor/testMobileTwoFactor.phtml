@@ -1,0 +1,62 @@
+<!--
+***************************************************************************************************
+
+										TEST MOBILE TWO FACTOR
+
+***************************************************************************************************	
+-->
+<h3>TEST TWO FACTOR</h3><hr/>
+<form name="f" method="post" id="" action="<?php echo $this->getadminurl('*/*/goBackTwoFactor') ?>">	
+	<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+	<input type="submit" name="submit"  style="margin-left:2%;float:right;" value="Go Back" class="button button-primary button-large" />
+</form>
+<?php if(Mage::getSingleton('admin/session')->getShowTestMobileAuth()){?>
+	<div><b>Scan QrCode: </b><span><b> Open your miniOrange app and scan the QR code.</b></span></div>
+<?php }else if(Mage::getSingleton('admin/session')->getTestpushnotification()){?>
+	<div><b>Accept or Deny Transaction:</b><span><b> Please Accept the transaction on your Configured Device.</b></span></div>
+<?php }else if(Mage::getSingleton('admin/session')->getTestoutofband()){?>
+	<div><b>Accept or Deny Transaction:</b><span><b> Please Accept the transaction on your Registered Email Id.</b></span></div>
+<?php }else if(Mage::getSingleton('admin/session')->getTestsofttoken() ||Mage::getSingleton('admin/session')->getTestsms() 
+			||Mage::getSingleton('admin/session')->getTestphoneverification() || Mage::getSingleton('admin/session')->getTestGoogleAuth() || Mage::getSingleton('admin/session')->getTestKBA() ){?>
+	<form name="f" method="post" id="" action="<?php echo $this->getadminurl('*/*/testTwoFactorOTP') ?>">
+		<table>
+		<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<?php if(Mage::getSingleton('admin/session')->getTestsofttoken()){?>
+			<tr><div><b>Enter Soft Token:</b><span><b> Please Enter the Soft Token using the miniOrange Authenticator App.</b></span></div>
+				<td style="width:23%;"><b><font color="#FF0000">*</font>Enter Token:</b></td>
+				<td><input class="" id="" autofocus="true" type="number" name="soft_token" placeholder="Enter Soft Token from miniOrange Authenticator App." pattern="[0-9]{4,6}"/></td></tr>
+			<?php }else if(Mage::getSingleton('admin/session')->getTestsms()){?>
+			<div><b>Enter OTP:</b><span><b> Please Enter the OTP sent to your Registered Device.</b></span></div>
+				<tr><td style="width:23%;"><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+				<td><input class="" id="validateotp" autofocus="true" type="number" name="sms_otp" placeholder="Enter OTP sent to <?php echo $this->getConfig('phone');?>" pattern="[0-9]{4,6}"/></td></tr>
+			<?php }else if(Mage::getSingleton('admin/session')->getTestphoneverification()){?>
+				<tr><div><b>Enter OTP:</b><span><b> You will receive a call shortly. Please enter the OTP you hear.</b></span></div>
+				<td style="width:23%;"><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+				<td><input class="" id="validateotp" autofocus="true" type="number" name="phonecall_otp" placeholder="Enter OTP sent to <?php echo $this->getConfig('phone');?>" pattern="[0-9]{4,6}"/></td></tr>
+			<?php }else if(Mage::getSingleton('admin/session')->getTestGoogleAuth()){?>
+				<tr><div><b>Enter Token:</b><span><b> Please Open your Google Authenticator App and enter the Token for your account below.</b></span></div>
+				<td style="width:23%;"><b><font color="#FF0000">*</font>Enter Token:</b></td>
+				<td><input class="" id="validateotp" autofocus="true" type="number" name="gaauth_otp" placeholder="Enter the Token for your Account from Google Authenticator." pattern="[0-9]{4,6}"/></td></tr>
+			<?php }else if(Mage::getSingleton('admin/session')->getTestKBA()){?>
+				<div><b>Validate Security Questions:</b><span><b> Please answer the questions below.</b></span></div>
+				<tr><td><b><font color="#FF0000">*</font><?php echo Mage::getSingleton('admin/session')->getKBAQuestion1()?></b></td>
+				<td><input class="mo2f_kba_textbox" type="text" name="mo2f_answer_1" id="mo2f_answer_1" required="true" autofocus="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed."></td></tr>
+				<tr><td><b><font color="#FF0000">*</font><?php echo Mage::getSingleton('admin/session')->getKBAQuestion2()?></b></td>
+				<td><input class="mo2f_kba_textbox" type="text" name="mo2f_answer_2" id="mo2f_answer_2" required="true" autofocus="true" pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed."></td></tr>
+			<?php }?>
+		</table>
+		<input type="submit" name="submit" style="margin-left:2%;" value="Validate" class="button button-primary button-large" />
+	</form>
+<?php }?>
+<?php if(!Mage::getSingleton('admin/session')->getTestsofttoken() && !Mage::getSingleton('admin/session')->getTestsms() 
+		&& !Mage::getSingleton('admin/session')->getTestphoneverification() &&!Mage::getSingleton('admin/session')->getTestGoogleAuth() && !Mage::getSingleton('admin/session')->getTestKBA() ){ ?>
+	<table>
+		<div id="testQrCode" class="center">
+		<?php if(!$this->getqrCode()){?>
+			<span id="progress_bar"></span>
+		<?php }else{?>
+			<?php echo "<img src = 'data:image/jpg;base64," . $this->getqrCode() . "' / > " ?>
+		<?php }?>
+		</div>
+	</table>
+<?php }?>

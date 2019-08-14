@@ -1,0 +1,222 @@
+	<html>
+	<head>		
+		<link href="https://auth.miniorange.com/moas/css/telephone.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/css/MiniOrange_2factor/frontSettings.css'; ?>"></link>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://auth.miniorange.com/moas/js/intlTelInput.min.js"></script>
+		<script>
+			var $m = jQuery.noConflict();
+			$m(document).ready(function() {
+				$email = "<?php echo $this->getConfig('miniorange_email')?>";
+			    $twofactortype = "<?php echo $this->getConfig('customer_twofactortype'); ?>"
+			    $downloaded = "<?php echo $this->getConfig('customer_downloaded_app')?>";
+			    $showTwoFactorSettings = "<?php echo Mage::getSingleton('customer/session')->getShowTwoFactorSettings(); ?>";
+			});	
+		</script>
+		<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/frontSettings.js'; ?>"></script>
+		<!--Polling Script-->
+		<script>
+			var transId = "<?php echo $this->getcustomerTransactionId()  ?>";
+			var test = "<?php echo Mage::getSingleton('customer/session')->getTestValidationScreen(); ?>";
+			var testMobile = "<?php echo Mage::getSingleton('customer/session')->getShowTestMobileAuth(); ?>";
+			if (test == "1") {
+		        var postUrl = "<?php echo $this->getHostURl()  ?>" + "/moas/api/auth/auth-status";
+		    } else {
+		        var postUrl = "<?php echo $this->getHostURl()  ?>" + "/moas/api/auth/registration-status";
+		    }
+		    var url1 = "<div id='success' style='margin-left: 4%; margin-top:2%;'><img src='" + "<?php echo $this->getImage('right') ?>" + "' /></div>";
+		    var url2 = "<div id='error' style='margin-left: 4%; margin-top:2%;'><img src='" + "<?php echo $this->getImage('wrong') ?>" + "' /></div>";
+		</script>
+		<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/adminSettingsPolling.js'; ?>"></script>
+		<!--Slider Script-->
+		<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/sliderScript.js'; ?>"></script>
+	</head>		
+	<body>
+		<?php 
+		$groupId = Mage::getSingleton('customer/session')->getCustomer()->getGroupId();
+		if(!Mage::helper('MiniOrange_2factor')->getConfig('group_enabled',$groupId)==1){ ?>
+			<h1 class="page-heading">Access denied</h1>
+			<p>Please try to logout and sign in again.<br>
+			If this message persists, please contact the store owner.</p>
+		<?php }else{ ?>
+		<div class="heading"> <h3>miniOrange Two Factor Extension Configuration</h3></div>
+		<div class="container">
+		  <div class="navbar navbar-tabs">
+		  <div id="current_page"><a id="nav-toggle" href="#"><span></span></a>Navigation Menu</div>
+		  <ul>
+			<?php if( $this->getConfig('miniorange_email')){?>
+			<li id="user_profile"><a data-method="#userprofile">User Profile</a></li>
+			<?php }else{?>
+			<li id="account_setup"><a data-method="#accountsetup">Account Setup</a></li>
+			<?php }?>
+			<li id="two_factor_setup"><a data-method="#twofactorsetup">Two Factor Setup</a></li> 
+			<li id="how_it_works"><a data-method="#howitworks">How it Works</a></li>
+			<li id="help_trouble"><a data-method="#helptrouble">FAQs</a></li>
+		  </ul> 
+		  </div>
+		<div class="container-page">
+			<!-- USER PROFILE TAB -->
+			<?php if( $this->getConfig('miniorange_email')){?>
+			<div class="mo_page" id="userprofile">
+			<div class="mo2f_table_layout">
+			<h3>Your Profile Information</h3><hr/>	
+				<table>
+				  <tr>
+					<td><b>miniOrange Account Email</b></td>
+					<td><?php echo $this->getConfig('miniorange_email')?></td> 
+				  </tr>
+				  <tr>
+					<td><b>Customer Key</b></td>
+					<td><?php echo $this->getConfig('customerKey')?></td> 
+				  </tr>
+				  <tr>
+					<td><b>Api Key</b></td>
+					<td><?php echo $this->getConfig('apiKey')?></td> 
+				  </tr>
+				  <tr>
+					<td><b>Api Token</b></td>
+					<td><?php echo $this->getConfig('apiToken')?></td> 
+				  </tr>
+				</table>
+				</div>
+			</div>
+			<?php }else{ ?>
+			<!-- ACCOUNT SETUP TAB -->
+			<div class="mo_page" id="accountsetup">
+			<?php if(!Mage::getSingleton('customer/session')->getUser() && !Mage::getSingleton('customer/session')->getOTPsent()){ ?>
+			<div class="mo2f_table_layout">
+			<form id="additional_user" name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/addUser') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<div class="login_miniorange">
+					<h3>Login with miniOrange</h3>
+					<div id="panel1">
+					<div class="block-title"><strong><span>miniOrange Two Factor Authentication has been enabled for you. Please register yourself.</span></strong></div>
+					<p class="required" style="float:right;">* Required Fields</p>
+						<table class="table">
+							<tr>
+							<td>Email:<span style="color:red;">*</span></td>
+							<td><input class="" type="email" name="additional_email"  autofocus="true" required placeholder="person@example.com" value="<?php echo $this->getCurrentUser()?>"/></td>
+							</tr>
+							<tr>
+							<td>Phone:<span style="color:red;">*</span></td>
+							 <td><input class="" type="text" id="additional_phone" name="additional_phone" required title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/></td>
+							</tr>
+						</table>
+						<br>
+						<div class="button-align"><input type="submit" name="submit" value="Submit" class="button" /></div>
+						
+					</div>
+				</div>
+			</form>
+			</div>
+			<?php }else{?>
+				<div class="validate_otp">
+					<h3>Validate OTP</h3><hr>
+					<div id="panel1">
+						<table class="">
+							<form name="f" method="post" id="" action="<?php echo $this->miniorange_geturl('*/*/validateNewUser') ?>">
+								<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+									<tr>
+										<td><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+										<td colspan="2"><input class="" id="validateotp" autofocus="true" type="number" name="otp" required placeholder="Enter OTP" style="width:95%;" pattern="[0-9]{4,6}"/></td>
+									</tr>
+						</table>
+							<div class="button-align">
+							<input type="submit" name="submit" value="Submit" class="button" />
+							</div>
+						</form>
+						<form name="f" method="post" id="" action="<?php echo $this->miniorange_geturl('*/*/resendValidationOTP') ?>">
+							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+							<div class="button-align">
+							<input type="submit" name="submit" value="Resend-OTP" class="button" d/>
+							</div>
+						</form>
+						<form name="f" method="post" id="" action="<?php echo $this->miniorange_geturl('*/*/cancelValidation') ?>">
+							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+							<div class="button-align">
+							<input type="submit" name="submit" value="« Go Back" class="button" />
+							</div>
+						</form>
+					</div>					
+				</div>
+				<?php }?>
+			</div>	
+			<?php }?>
+			
+			
+		<!-- TWO FACTOR SETUP -->
+		<div class="mo_page" id="twofactorsetup">
+			<?php if(!Mage::getSingleton('customer/session')->getShowConfigureMobile() && !Mage::getSingleton('customer/session')->getShowPhoneValidation() 
+						&& !Mage::getSingleton('customer/session')->getShowQR() && !Mage::getSingleton('customer/session')->getTestValidationScreen() 
+					&& !Mage::getSingleton('customer/session')->getShowGoogleAuthSetup() && !Mage::getSingleton('customer/session')->getShowKBASetup()){ ?>
+			
+				<!-- TWO FACTOR LIST -->
+					<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/twoFactorList.phtml')->toHtml(); ?>
+
+				<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/showQRCode') ?>" id="mo2f_2factor_reconfigure_mobile_form">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+					<input type="hidden" id="reconfigure_mobile" name="reconfigure_mobile" value="" />
+				</form>
+				<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/reconfigurePhone') ?>" id="mo2f_2factor_reconfigure_phone_form">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+					<input type="hidden" id="phone_reconfigure" name="phone_reconfigure" value="" />
+				</form>
+				<form name="f" method="post" action="<?php echo $this->getadminurl('*/*/reconfigureKBA') ?>" id="mo2f_2factor_reconfigure_kba_form">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>
+				<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/reconfigureGA') ?>" id="mo2f_2factor_reconfigure_ga_form">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				</form>
+				<form name="f" method="post" action="<?php echo $this->miniorange_geturl('*/*/testTwoFactor') ?>" id="mo2f_2factor_test_form">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+					<input type="hidden" id="test_2factor" name="test_2factor" value="">
+				</form>	
+			<?php }?>
+			
+			<?php if(Mage::getSingleton('customer/session')->getTestValidationScreen()){ ?>
+				<!-- TEST TWO FACTOR -->
+				<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/testTwoFactor.phtml')->toHtml(); ?>
+			<?php }?>
+			
+			<?php if(Mage::getSingleton('customer/session')->getShowConfigureMobile() || Mage::getSingleton('customer/session')->getShowQR()){ ?>
+				<!-- CONFIGURE MOBILE -->
+				<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/configureMobile.phtml')->toHtml(); ?>
+			<?php }?>
+
+			<form name="f" method="post" id="mobile_register_form" action="<?php echo $this->miniorange_geturl('*/*/transactionSuccess') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			</form>
+			<form name="f" method="post" id="mobile_register_failed" action="<?php echo $this->miniorange_geturl('*/*/transactionTimeOut') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			</form>
+					
+			<?php if(Mage::getSingleton('customer/session')->getShowPhoneValidation()){?>
+				<!-- CONFIGURE PHONE -->
+				<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/configurePhone.phtml')->toHtml(); ?>
+			<?php }?>
+		
+			<?php if(Mage::getSingleton('customer/session')->getShowGoogleAuthSetup()){?>
+				<!-- CONFIGURE GOOGLE AUTHENTICATOR -->
+				<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/configureGoogleAuthenticator.phtml')->toHtml(); ?>
+			<?php }?>
+
+			<?php if(Mage::getSingleton('customer/session')->getShowKBASetup()){?>
+				<!-- CONFIGURE KBA -->
+				<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/configureKBA.phtml')->toHtml(); ?>
+			<?php }?>
+		</div>
+		<div id="progressBar" >
+			<center><div style="font-weight:bold;font-size:18px;margin-top:5%;">PROCESSING YOUR REQUEST. PLEASE WAIT!</div></center>
+			<span  id="progress_bar"></span>
+		</div>
+			
+			
+		<!--HOW IT WORKS TAB-->
+		<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/mo2fFaq.phtml')->toHtml(); ?>	
+				
+		<!-- HELP AND TROUBLESHOOTING TAB-->
+		<?php echo $this->getLayout()->createBlock('MiniOrange_2factor/mo2fConfig')->setTemplate('miniorange_2factor/generalFaq.phtml')->toHtml(); ?>	
+				
+		<?php }?>
+	</body>
+	</html>

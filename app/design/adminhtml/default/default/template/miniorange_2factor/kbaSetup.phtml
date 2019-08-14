@@ -1,0 +1,77 @@
+<!--
+***************************************************************************************************
+
+										KBA SETUP
+
+***************************************************************************************************	
+-->
+<h3>Configure Second Factor - KBA (Security Questions)</h3><hr />
+	<p>Please choose 3 questions</p>
+	<form name="f" method="post" action="<?php echo $this->getadminurl('*/*/saveKBAQuestions') ?>" id="mo2f_kba_setup_form">
+	<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+	<table class="mo2f_kba_table" >
+			<tr>
+			<td>Sr. No.</td>
+			<td class="mo2f_kba_tb_data">Questions</td>
+			<td>Answers</td>
+			</tr>
+			<tr>
+			<td>
+			<center>1.</center>
+			</td>
+			<td class="mo2f_kba_tb_data">
+				<select name="mo2f_kbaquestion_1" id="mo2f_kbaquestion_1" class="mo2f_kba_ques" required="true"  >
+					<option value="" selected="selected">---------------------Select your question---------------------</option>
+					<option value="What is your first company name?">What is your first company name?</option>
+					<option value="What was your childhood nickname?">What was your childhood nickname?</option>
+					<option value="In what city did you meet your spouse/significant other?">In what city did you meet your spouse/significant other?</option>
+					<option value="What is the name of your favorite childhood friend?">What is the name of your favorite childhood friend?</option>
+					<option value="What school did you attend for sixth grade?">What school did you attend for sixth grade?</option>
+					<option value="In what city or town was your first job?">In what city or town was your first job?</option>
+					<option value="What is your favourite sport?">What is your favourite sport?</option>
+					<option value="Who is your favourite sports player?">Who is your favourite sports player?</option>
+					<option value="What is your grandmother's maiden name?">What is your grandmother's maiden name?</option>
+					<option value="What was your first vehicle's registration number?">What was your first vehicle's registration number?</option>
+				</select>
+			</td>
+			<td>
+				<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans1" id="mo2f_kba_ans1" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" autofocus="true" placeholder="Enter your answer"  />
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<center>2.</center>
+			</td>
+			<td class="mo2f_kba_tb_data">
+				<select name="mo2f_kbaquestion_2" id="mo2f_kbaquestion_2" class="mo2f_kba_ques" required="true">
+					<option value="" selected="selected">---------------------Select your question---------------------</option>
+					<option value="What is your first company name?">What is your first company name?</option>
+					<option value="What was your childhood nickname?">What was your childhood nickname?</option>
+					<option value="In what city did you meet your spouse/significant other?">In what city did you meet your spouse/significant other?</option>
+					<option value="What is the name of your favorite childhood friend?">What is the name of your favorite childhood friend?</option>
+					<option value="What school did you attend for sixth grade?">What school did you attend for sixth grade?</option>
+					<option value="In what city or town was your first job?">In what city or town was your first job?</option>
+					<option value="What is your favourite sport?">What is your favourite sport?</option>
+					<option value="Who is your favourite sports player?">Who is your favourite sports player?</option>
+					<option value="What is your grandmother's maiden name?">What is your grandmother's maiden name?</option>
+					<option value="What was your first vehicle's registration number?">What was your first vehicle's registration number?</option>
+				</select>
+			</td>
+			<td>
+				<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans2" id="mo2f_kba_ans2" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" placeholder="Enter your answer"  />
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<center>3.</center>
+			</td>
+			<td class="mo2f_kba_tb_data">
+				<input class="mo2f_kba_ques" type="text" name="mo2f_kbaquestion_3" id="mo2f_kbaquestion_3"  required="true" placeholder="Enter your custom question here"/>
+			</td>
+			<td>
+				<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans3" id="mo2f_kba_ans3"  title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" placeholder="Enter your answer"/>
+			</td>
+		</tr>
+	</table><br>
+		<input type="submit" name="submit"  value="Save" class="button button-primary button-large" />
+	</form>	

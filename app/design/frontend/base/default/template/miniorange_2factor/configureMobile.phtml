@@ -1,0 +1,59 @@
+<!--
+***************************************************************************************************
+
+										CONFIGURE MOBILE
+
+***************************************************************************************************	
+-->
+<div id="configuremobile">
+	<div class="mo2f_table_layout">
+				<div><h3>CONFIGURE YOUR MOBILE</h3><hr></div>	
+			
+				<div id="downloadscreen">							
+					<div><b>Step 1: </b>Download the miniOrange <span style="color: #F78701;">miniOrange Authenticator</span> app</div>
+						<table>
+						<tr>
+							<td  class="panel-body" style="width:50%;">
+								<p class="content_fonts" style="margin-bottom:2px!important;"><b>iPhone Users</b></p>
+								<ol>
+									<li>Go to App Store</li>
+									<li>Search for <b>miniOrange</b></li>
+									<li>Download and install <span style="color: #F78701;"><b>miniOrange Authenticator</b></span> app (<b>NOT MOAuth</b>)</li>
+								</ol>
+								<span><a target="_blank" href="https://itunes.apple.com/us/app/miniorange-authenticator/id796303566?ls=1"><img src="<?php echo $this->getImage('appstore') ?>" style="width:120px; height:45px; margin-left:6px;"></a></span><br><br>
+							</td>
+							<td  class="panel-body">
+								<p class="content_fonts" style="margin-bottom:2px!important;"><b>Android Users</b></p>
+								<ol>
+									<li> Go to Google Play Store.</li>
+									<li> Search for <b>miniOrange.</b></li>
+									<li>Download and install <span style="color: #F78701;"><b>miniOrange Authenticator</b></span> app (<b>NOT MOAuth</b>)</li>
+								</ol>
+								<a target="_blank" href="https://play.google.com/store/apps/details?id=com.miniorange.authbeta"><img src="<?php echo $this->getImage('playStore') ?>" style="width:120px; height:=45px; margin-left:6px;"></a>
+							</td>
+						</tr>
+						</table>
+					</div>
+				
+			<form name="f" method="post" id="configMobileForm" action="<?php echo $this->miniorange_geturl('*/*/showQRCode') ?>">	
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<input type="checkbox" id="showDownload" name="showDownload" value="0" />Check here if you have downloaded the app.
+				<input type="submit" name="submit"  style="margin-left:2%;" value="Go Back" class="button button-primary button-large" />
+				<input style="display:none;" type="submit" name="submit" id="configmobilebutton" style="margin-left:2%;" class="button button-primary button-large" />
+			</form>
+			
+			<div id="configureqr">
+				<div><b>Step 2: Scan QR code: </b>Open your miniOrange app and click on Configure Button to scan the QR code.</div>
+			<table class="QrCode">
+				<div id="displayQrCode" class="center">
+				<?php if(!Mage::getSingleton('customer/session')->getShowQR()){?>
+					<span id="progress_bar"></span>
+				<?php }else{?>
+					<?php echo "<img src = 'data:image/jpg;base64," . $this->getcustomerqrCode() . "' / > " ?>
+				<?php }?>
+				</div>
+			</table>
+			<br />
+		</div>
+	</div>
+</div>

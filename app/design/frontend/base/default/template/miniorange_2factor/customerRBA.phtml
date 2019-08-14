@@ -1,0 +1,15 @@
+<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+<input name="miniorange_rba_attribures" id="miniorange_rba_attribures" type="hidden" value=""/>
+<script>var relPath = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor'; ?>';</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">jQuery.noConflict()</script>
+<script>$j=jQuery.noConflict();</script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/jquery.flash.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/ua-parser.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/client.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/device_attributes.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/swfobject.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/fontdetect.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/murmurhash3.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/miniorange-fp.js'; ?>"></script>
+<script>$j('#login-form').on('submit', function(e){$j('#miniorange_rba_attribures').val(JSON.stringify(rbaAttributes.attributes));});</script>

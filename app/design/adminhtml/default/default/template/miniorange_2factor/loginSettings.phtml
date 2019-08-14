@@ -1,0 +1,79 @@
+<!--
+***************************************************************************************************
+
+										LOGIN SETTINGS TAB
+
+***************************************************************************************************	
+-->
+
+<div class="page" id="loginsettings">
+<div class="mo2f_table_layout">
+	<form name="f"  method="post" action="<?php echo $this->getadminurl('*/*/saveLoginSettings') ?>">
+		<div><h3>ADMIN LOGIN SETTINGS</h3></div>
+		<hr>
+		<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		<b>Specify the Roles you want to enable Two Factor For:</b><br>
+		<?php 
+			$roles = Mage::getModel('admin/roles')->getCollection();
+			$disabled = ($this->getConfig('isEnabled')!=1 || empty($this->getConfig('email'))) ? 'disabled' : '';
+			foreach($roles as $role):
+			  echo '<input type="checkbox" '.$disabled.' id="mo2f_roles" name="'.$role->getRoleName().'" value="1" '.$this->isRoleEnabled($role->getRoleId()).'/><b>'.$role->getRoleName().'</b>';
+			endforeach; 
+		 ?>
+		   <div id="mo2f_note">
+		   		<b>Note:</b> Selecting the above roles will enable 2-Factor for all users associated with that role. Users of the selected role who have not setup their 2-Factor will be able to setup 2 factor during inline registration.
+		   	</div>
+		<br><br>
+
+		<input type="checkbox" id="mo2f_remember_device_enable" name="admin_remember_device_activation" value="1"  <?php echo (empty($this->getConfig('email'))) ? 'disabled' : '' ?> <?php echo ($this->getConfig('isEnabled')!=1) ? 'disabled' : '' ?> <?php echo $this->isadminRememberDeviceEnabled(); ?> /><b>Enable 'Remember device'.</b>
+		<div id="mo2f_note">
+			<b>Note:</b> Checking this option will display an option 'Remember this device' on 2nd factor screen for all admins. In the next login from the same device, admin users will bypass 2nd factor, i.e. all admin users will be logged in through username + password only.
+		</div>
+		<br>
+		
+		<input type="checkbox" id="mo2f_inline_registration" name="admin_inline_registration_activation" value="1"  <?php echo (empty($this->getConfig('email'))) ? 'disabled' : '' ?> <?php echo ($this->getConfig('isEnabled')!=1) ? 'disabled' : '' ?> <?php echo $this->isadmininlineRegistrationEnabled(); ?> /><b>Enforce 2 Factor registration at login.</b>
+		<div id="mo2f_note">
+			<b>Note:</b> If this option is enabled then all admin users will have to setup their two-factor account the next time they login. Keep this option unchecked if you do not want admin users to setup their two-factor during login.
+		</div>
+		<br><br>
+		
+		<div><h3>CUSTOMER LOGIN SETTINGS</h3></div><hr>
+
+		<input type="checkbox" id="mo2f_customer_activation" name="customer_activation" value="1"  <?php echo empty($this->getConfig('email')) ? 'disabled' : '' ?>  <?php echo $this->isCustomerEnabled(); ?> /><b>Enable 2-Factor for Customers.</b>
+		<div id="mo2f_note">
+			<b>Note:</b> This will enable 2-Factor for your customers.
+		</div>
+		<br>
+		
+		<b>Specify the Groups you want to enable Two Factor For:</b><br>
+		<?php 
+			$groups = Mage::helper('customer')->getGroups();
+			$disabled = ($this->getConfig('isCustomerEnabled')!=1 || empty($this->getConfig('email'))) ? 'disabled' : '';
+			foreach($groups as $group):
+			  echo '<input type="checkbox" '.$disabled.' id="mo2f_roles" name="'.$group->getCustomerGroupCode().'" value="1" '.$this->isgroupEnabled($group->getCustomerGroupId()).'/><b>'.$group->getCustomerGroupCode().'</b>';
+			endforeach; 
+		?>
+		<div id="mo2f_note">
+			<b>Note:</b> Selecting the above groups will enable 2-Factor for all users associated with that group. Users of the selected group who have not setup their 2-Factor will be able to setup 2 factor during inline registration.
+		</div>
+		<br><br>
+		
+		<input type="checkbox" id="mo2f_remember_device_enable" name="customer_remember_device_activation" value="1" <?php echo (empty($this->getConfig('email'))) ? 'disabled' : '' ?>  <?php echo ($this->getConfig('isCustomerEnabled')!=1) ? 'disabled' : '' ?> <?php echo $this->iscustomerRememberDeviceEnabled(); ?> /><b>Enable 'Remember device'.</b>
+		<div id="mo2f_note">
+			<b>Note:</b> Checking this option will display an option 'Remember this device' on 2nd factor screen. In the next login from the same device, user will bypass 2nd factor, i.e. user will be logged in through username + password only.
+		</div>
+		<br>
+		
+		<input type="checkbox" id="mo2f_inline_registration" name="customer_inline_registration_activation" value="1" <?php echo (empty($this->getConfig('email'))) ? 'disabled' : '' ?>  <?php echo ($this->getConfig('isCustomerEnabled')!=1) ? 'disabled' : '' ?> <?php echo $this->iscustomerinlineRegistrationEnabled(); ?> /><b>Enforce 2 Factor registration at login. </b>
+		<div id="mo2f_note">
+			<b>Note:</b> If this option is enabled then users will have to setup their two-factor account the next time they login. Keep this option unchecked if you do not want users to setup their two-factor during login.
+		</div>
+		<br>
+
+		<div class="button-align">
+			<input type="submit" name="submit" value="Save Settings" class="button button-primary button-large" />
+		</div>
+		<br><br>
+	</form>
+</div>
+</div>

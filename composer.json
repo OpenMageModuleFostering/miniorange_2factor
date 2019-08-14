@@ -3,7 +3,7 @@
     "type": "magento-module",
     "license": "GNU-General-Public-License-(GPL)",
     "homepage": "",
-    "description": "This plugin enablesTwo Factor Authentication for admins for your Magento backend.",
+    "description": "Effortless Two-Factor Authentication Setup. Supports Email, SMS, Qr, Google Authenticator, etc.",
     "authors": [
     {
         "name": "miniOrange inc.",

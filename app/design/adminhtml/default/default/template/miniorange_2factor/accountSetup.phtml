@@ -1,0 +1,193 @@
+<!--
+***************************************************************************************************
+
+										ACCOUNT SETUP TAB
+
+***************************************************************************************************	
+-->
+<?php
+	$user = Mage::getSingleton('admin/session'); 
+	$userEmail = $user->getUser()->getEmail();
+	$status= $user->getmo2fstatus();
+?>
+<div class="page" id="accountsetup">
+<div id="login">
+<div class="mo2f_table_layout">
+<?php 
+	if(is_null($this->getConfig('mainAdmin')) || $this->getConfig('mainAdmin')==0 ) { 
+		if($status=='') { 
+?>
+		<form name="f" method="post" action="<?php echo $this->getadminurl('*/*/registerNewUser') ?>" id="register-form">
+			<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			<div class="mo_idp_table_layout">
+				<h3>REGISTER WITH MINIORANGE</h3><hr>
+				<table class="mo2f_table_layout">
+					<tr>
+						<td><b><font color="#FF0000">*</font>Email:</b></td>
+						<td><input class="" type="email" name="email"
+							required placeholder="person@example.com"
+							value="<?php echo $userEmail ;?>" /></td>
+					</tr>
+					<tr>
+						<td><b><font color="#FF0000">*</font>Password:</b></td>
+						<td><input class="" required type="password"
+							name="password" placeholder="Choose your password (Min. length 6)" /></td>
+					</tr>
+					<tr>
+						<td><b><font color="#FF0000">*</font>Confirm Password:</b></td>
+						<td><input class="" required type="password"
+							name="confirmPassword" placeholder="Confirm your password" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><br /><input type="submit" name="submit" value="Register" style="width:100px;"
+							class="button button-primary button-large" /></td>
+					</tr>
+				</table>
+									
+			</div>
+		</form>
+<?php 	
+		} else if(strcmp($status,'MO_OTP_EMAIL_VALIDATE')==0 || 
+			strcmp($status,'MO_OTP_PHONE_VALIDATE')==0 || 
+			strcmp($status,'MO_OTP_DELIVERED_FAILURE')==0) { 
+?>
+			<h3>VERIFY YOUR EMAIL</h3><hr>
+			<form name="f" method="post" id="otp_form" action="<?php echo $this->getadminurl('*/*/validateNew') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<table class="mo2f_table_layout">
+					<tr>
+						<td><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+						<td><input class="" id="validateotp" autofocus="true" type="text" name="otp" placeholder="ENTER OTP" pattern="{6,8}"/>
+						</td><td><a class="btn-link" onclick="document.getElementById('resend_otp_form').submit();">Resend OTP</a></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<input type="submit" name="submit"  value="Validate OTP" class="button button-primary button-large" />
+							<input type="submit" name="submit" value="Back" class="button button-primary button-large" />
+						</td>
+					</tr>
+				</table>
+			</form>
+			<form name="f" id="resend_otp_form" method="post" action="<?php echo $this->getadminurl('*/*/resendValidationOTP') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+			</form>
+			<hr>
+			<div style="margin-left:2%;">
+				<h3>I did not recieve any email with OTP . What should I do ?</h3>
+				<div class="collapse" style="display:block;"> If you can't see the email from miniOrange in your mails, please check your <b>SPAM</b> folder. If you don't see an email even in the SPAM folder, verify your identity with our alternate method below.</div><br>
+				<b>Enter your valid phone number here and verify your identity using one time passcode sent to your phone.</b>
+			</div>
+			<form id="mo2f_register_with_phone_form" method="post" action="<?php echo $this->getadminurl('*/*/sendOTPPhone') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<table class="mo2f_table_layout">
+					<tr>
+						<td><input class="" type="tel" id="phone_contact"
+							pattern="[\+]\d{11,14}|[\+]\d{1,4}([\s]{0,1})(\d{0}|\d{9,10})" class="" name="phone" 
+							title="Phone with country code eg. +1xxxxxxxxxx" required
+							placeholder="Phone with country code eg. +1xxxxxxxxxx"
+							value="" /></td>
+							<td><input type="submit" value="Send OTP" class="button button-primary button-large" /></td>
+					</tr>
+				</table>
+			</form>
+<?php 
+		} else if($status=="MO_VERIFY_CUSTOMER") {
+?>
+			<form id="register_miniorange" name="f" method="post" action="<?php echo $this->getadminurl('*/*/existingUser') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<div class="login_miniorange">
+					<div><h3>LOGIN WITH MINIORANGE</h3></div>	
+					<hr>
+					<div id="panel1">
+						<div><b>Please Login with your miniOrange credentials</b></div><br />
+						<table class="table">
+							<tr>
+							<td><b><font color="#FF0000">*</font>Email:</b></td>
+							<td><input class="" type="email" name="loginemail"  id="loginemail" autofocus="true" required placeholder="person@example.com" style="width:400px;" value="<?php echo Mage::getSingleton('admin/session')->getEnteredEmail(); ?>"/></td>
+							</tr>
+							<tr>
+							<td><b><font color="#FF0000">*</font>Password:</b></td>
+							 <td><input class="" type="password" name="loginpassword" style="width:400px;" placeholder="Enter your password" pattern="[a-zA-Z0-9!@#$%^&*]{6,24}"/></td>
+							</tr>
+						</table>
+						<br>
+						<div class="button-align"><input type="submit" name="submit" value="Submit" class="" /></div>
+						<div class="button-align"><input type="button" id="goBackButton" value="Go Back" onClick="document.getElementById('goBackRegister').submit()" class="button button-primary button-large" /></div>
+						<div class="button-align"><input type="submit" name="submit" value="Forgot Password?" class="" /></div>
+					</div>
+				</div>
+			</form>
+			<form id="goBackRegister" method="post" action="<?php echo $this->getadminurl('*/*/existingUser') ?>">
+				<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+				<input type="hidden" name="hidden" value="Go Back" class="" />
+			</form>
+<?php 
+		}
+	} else { 
+		if(!Mage::getSingleton('admin/session')->getShowOTP()){ 
+?>
+			<div class="additional_user">
+				<form id="additional_admin" name="f" method="post" action="<?php echo $this->getadminurl('additionalAdmin') ?>">
+					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+					<div class="login_miniorange">
+						<h3>LOGIN WITH MINIORANGE</h3><hr>
+						<div id="panel1">
+							<div><b>miniOrange Two Factor Authentication has been enabled for you. Please register yourself.</b></div><br />
+							<table class="table">
+								<tr>
+								<td><b><font color="#FF0000">*</font>Email:</b></td>
+								<td><input class="" type="email" name="additional_email"  autofocus="true" required placeholder="person@example.com" value=""/></td>
+								</tr>
+								<tr>
+								<td><b><font color="#FF0000">*</font>Phone number:</b></td>
+								 <td><input class="" type="text" name="additional_phone" id="additional_phone" required title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/><span class="required">*We will call only if you need support.</span></td>
+								</tr>
+							</table>
+							<br>
+							<div class="button-align"><input type="submit" name="submit" value="Submit" class="" /></div>
+							
+						</div>
+					</div>
+				</form>
+			</div>
+<?php 
+		} else {
+?>
+			<div class="validate_otp">
+				<h3>VALIDATE OTP</h3><hr>
+				<div id="panel1">
+					<table class="">
+						<form name="f" method="post" id="" action="<?php echo $this->getadminurl('*/*/validateNewUser') ?>">
+							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+								<tr>
+									<td><b><font color="#FF0000">*</font>Enter OTP:</b></td>
+									<td colspan="2"><input class="" id="validateotp" autofocus="true" type="number" name="otp" required placeholder="Enter OTP" style="width:95%;" pattern="[0-9]{4,6}"/></td>
+								</tr>
+					</table>
+						<div class="button-align">
+						<input type="submit" name="submit" value="Submit" class="" />
+						</div>
+					</form>
+					<form name="f" method="post" id="" action="<?php echo $this->getadminurl('*/*/resendValidationOTP') ?>">
+						<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+						<div class="button-align">
+						<input type="submit" name="submit" value="Resend-OTP" class="" />
+						</div>
+					</form>
+					<form name="f" method="post" id="" action="<?php echo $this->getadminurl('*/*/cancelValidation') ?>">
+						<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+						<div class="button-align">
+						<input type="submit" name="submit" value="Go Back" class="" />
+						</div>
+					</form>
+				</div>					
+			</div>
+<?php 
+		} 
+	} 
+?>
+</div>
+</div>
+</div>

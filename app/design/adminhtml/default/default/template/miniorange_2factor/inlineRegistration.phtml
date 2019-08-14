@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/css/MiniOrange_2factor/adminInlineRegistration.css'; ?>"></link>
+		 <link href="https://auth.miniorange.com/moas/css/telephone.css" rel="stylesheet">
+		 <link type="text/css" rel="stylesheet" href="<?php echo $this->getSkinUrl('reset.css') ?>" media="all" />
+		 <link type="text/css" rel="stylesheet" href="<?php echo $this->getSkinUrl('boxes.css') ?>" media="all" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://auth.miniorange.com/moas/js/intlTelInput.min.js"></script>
+		<script>var tranxId = "<?php echo Mage::getSingleton('adminhtml/session')->getLogintxtId() ?>";</script>
+		<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/inline.js'; ?>"></script>
+		<!--Polling Script-->
+		<script>var postUrl = "<?php echo Mage::helper('MiniOrange_2factor')->getHostURl()?>/moas/api/auth/registration-status";</script>
+		<script>var url1 = "<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/right.png'; ?>";</script>
+		<script>var url2 ="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/wrong.png'; ?>";</script>
+		<script src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/js/MiniOrange_2factor/inlinePolling.js'; ?>"></script>
+	</head>
+	<body>
+	<?php if(!Mage::getSingleton('adminhtml/session')->getShowConfigureMobile() && !Mage::getSingleton('adminhtml/session')->getShowPhoneValidation() && !Mage::getSingleton('adminhtml/session')->getShowGoogleAuthSetup() && !Mage::getSingleton('adminhtml/session')->getShowKBASetup()){?>
+		<div id="setupScreen"> 
+			<div class="panel-content" id="setup-before">	
+				<div class="setup-header"></div>
+				<div class="setup-content">
+					<div id="messages">
+						<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+							<ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+						<?php }?>	
+					</div>
+					<div id="heading"><h2>SETUP TWO FACTOR</h2></div>
+					<div style="padding:2% 5%;font-size: 14px;">
+						<div id="twofactor-content">
+						<?php if(!Mage::getSingleton('adminhtml/session')->getShowInlineValidate() && !Mage::getSingleton('adminhtml/session')->getShowInlineTwoFactor()){?>
+							A new security system has been enabled to better protect your account. Please configure your Two-Factor Authentication method by setting up your account.
+							<form name="f" method="post" action="" id="" autocomplete="off">
+								<input style="margin:5% 0 5% 0;width:80%"; type="text" id="email" name="setup-email" autofocus="true" value="" placeholder="person@example.com" title="Enter Email Address" required/>
+								<br/><input type="submit" value="<?php echo Mage::helper('adminhtml')->__('Get Started') ?>" /><br/>
+							</form>
+						<?php }else if(Mage::getSingleton('adminhtml/session')->getShowInlineValidate()){?>
+							An OTP has been sent to <b><?php echo Mage::getSingleton('adminhtml/session')->getInlineEmail() ?></b>. Please enter the OTP below to verify your email. If you didn't get the email, please check your <b>SPAM folder</b>.
+							<form name="f" method="post" action="" id="" autocomplete="off">
+							<input style="margin:5% 0 3% 0;width:80%"; type="number" name="setup-otp" autofocus="true" id="setup-otp" title="One Time Passcode" placeholder="Enter OTP sent to <?php echo  Mage::getSingleton('adminhtml/session')->getInlineEmail()?>" pattern="[0-9]{4,6}"/><br/>
+							<br/><input type="submit" name="submit" value="<?php echo Mage::helper('adminhtml')->__('Validate OTP') ?>" />
+							<input type="submit" name="submit" value="<?php echo Mage::helper('adminhtml')->__('Resend OTP') ?>" /><br/>
+							</form>
+						<?php }else if(Mage::getSingleton('adminhtml/session')->getShowInlineTwoFactor()){?>
+							<div style="text-align:left;">
+							Select any Two-Factor of your choice below and complete its setup. <br/><br/>
+							<form name="f" method="post" action="" id="choose_method" autocomplete="off" style="margin-bottom:1%;">
+								<div id="radio"><input type="radio" name="twofactor" value="OUT OF BAND EMAIL"/>OUT OF BAND EMAIL</div>
+								<div id="radio"><input type="radio" name="twofactor" value="SMS"/>OTP OVER SMS</div>
+								<div id="radio"><input type="radio" name="twofactor" value="PHONE VERIFICATION"/>PHONE CALL VERIFICATION</div>
+								<div id="radio"><input type="radio" name="twofactor" value="SOFT TOKEN"/>SOFT TOKEN</div>
+								<div id="radio"><input type="radio" name="twofactor" value="MOBILE AUTHENTICATION"/>QR CODE AUTHENTICATION</div>
+								<div id="radio"><input type="radio" name="twofactor" value="PUSH NOTIFICATIONS"/>PUSH NOTIFICATION</div>
+								<div id="radio"><input type="radio" name="twofactor" value="GOOGLE AUTHENTICATOR"/>GOOGLE AUTHENTICATOR</div>
+								<div id="radio"><input type="radio" name="twofactor" value="KBA"/>KBA (SECURITY QUESTIONS)</div>
+							</form>
+							</div>
+						<?php }?>
+						<a class="button" id="goBack" href="#">« Go Back to Login</a>
+						</div>
+						<div class="progressBar" id="progressBar">
+							<div class="label-progressBar"><div id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></div></div>
+							<br/><span id="progress_bar"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php }else if(Mage::getSingleton('adminhtml/session')->getShowConfigureMobile()){?>
+		<div id="setupScreen"> 
+			<div class="panel-content" id="mobileAuth-screen">	
+				<div class="setup-header"></div>
+				<div class="setup-content">
+					<div id="messages">
+						<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+							<ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+						<?php }?>	
+					</div>
+					<div id="heading"><h2>SETUP MOBILE AUTHENTICATION</h2></div>
+					<div style="padding:1% 5%;font-size: 14px;">
+					<div id="twofactor-content">
+						<?php if(!Mage::getSingleton('adminhtml/session')->getShowInlineQrCode()){?>
+						<div id="downloadscreen">						
+								<div style="margin-bottom:1%; font-size:15px;"><b>STEP 1: Download the miniOrange <span style="color: #F78701;">miniOrange Authenticator</span> app</b></div><hr>
+									<table style="margin:1% 0;">
+									<tr>
+										<td  class="panel-body" style="width:50%;">
+											<p class="content_fonts" style="margin-bottom:2px!important;"><b>iPhone Users</b></p>
+												1. Go to App Store<br/>
+												2. Search for <b>miniOrange</b><br/>
+												3. Download and install <span style="color: #F78701;"><b>miniOrange Authenticator</b></span> app (<b>NOT MOAuth</b>)<br/>
+											<span><a target="_blank" href="https://itunes.apple.com/us/app/miniorange-authenticator/id796303566?ls=1"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/appstore.png'?>" style="width:120px; height:45px; margin-left:6px;"></a></span>
+										</td>
+										<td  class="panel-body">
+											<p class="content_fonts" style="margin-bottom:2px!important;"><b>Android Users</b></p>
+												1. Go to Google Play Store.<br/>
+												2. Search for <b>miniOrange.</b><br/>
+												3. Download and install <span style="color: #F78701;"><b>miniOrange Authenticator</b></span> app (<b>NOT MOAuth</b>)<br/>
+											<a target="_blank" href="https://play.google.com/store/apps/details?id=com.miniorange.authbeta"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/MiniOrange_2factor/playStore.png'?>" style="width:120px; height:=45px; margin-left:6px;"></a>
+										</td>
+									</tr>
+									</table>
+								<div style="margin:2% 0 1% 0; font-size:15px;"><b>STEP 2: Scan QR code:</b></div><hr>
+									<table style="margin-top:1%;">
+										<tr><td>Please click on <b>'Configure your phone'</b> button below to see QR Code.</td></tr>
+										<tr>
+											<td>
+											<form name="f" method="post" action="" id="configure_mobile" autocomplete="off">
+												<input type="submit"  name="configure_mobile" value="<?php echo Mage::helper('adminhtml')->__('Go Back') ?>" />
+												<input type="submit"  name="configure_mobile" value="<?php echo Mage::helper('adminhtml')->__('Configure your phone') ?>" />
+											</form>
+											</td>
+										</tr>
+									</table>
+							</div>
+						<?php }else{?>
+							<div id="QRCode">
+								<div style="margin:0 0 1% 0; font-size:15px;"><b>STEP 2: Scan QR code:</b></div><hr>
+								Open your miniOrange Authenticator app and click on Configure button to scan the QR Code. Your phone should have internet connectivity to scan QR code.<br/>
+								<div id="displayQrCode">
+									<div id="showQrCode">
+										<?php echo "<img src = 'data:image/jpg;base64,".Mage::getSingleton('adminhtml/session')->getLoginQRCode()."'/> " ?>
+									</div>
+								</div>
+								<form name="f" method="post" action="" id="configure_mobile" autocomplete="off">
+									<input type="submit"  name="configure_mobile" value="<?php echo Mage::helper('adminhtml')->__('Refresh QRCode') ?>" />
+								</form>
+							</div>
+						<?php }?>
+						<a class="button" id="goBack" href="#">« Go Back to Login</a>
+					</div>
+					<div class="progressBar" id="progressBar">
+						<div class="label-progressBar"><div id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></div></div>
+						<br/><span id="progress_bar"></span>
+					</div>
+				    </div>
+				</div>
+			</div>
+		</div>
+	<?php }else if(Mage::getSingleton('adminhtml/session')->getShowPhoneValidation()){?>
+		<div id="setupScreen"> 
+			<div class="panel-content" id="phoneValidation-screen">	
+				<div class="setup-header"></div>
+				<div class="setup-content">
+					<div id="messages">
+						<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+							<ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+						<?php }?>	
+					</div>
+					<div id="heading"><h2>VERIFY YOUR PHONE</h2></div>
+					<div style="padding:1% 5%;font-size: 14px;">
+					<div id="twofactor-content">
+						<div id="configurephone">
+							<form name="f" method="post" action="">
+								<b><div style="margin-bottom:1%;"><font color="#FF0000">*</font>Phone number:</div></b>
+								<input type="text" name="inlinetwofactor_phone" id="phone" required title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="<?php echo Mage::getSingleton('adminhtml/session')->getInlinePhone(); ?>" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/>								
+								<input type="submit" name="submit" style="margin:1% 0 3% 0;" value="Verify" class="button button-primary button-large" />
+							</form><br/>
+							<form name="f" method="post" action="">
+								<b><div style="margin-bottom:1%;"><font color="#FF0000">*</font>Enter OTP:</div></b>
+								<input class="" id="validateotp" autofocus="true" type="number" name="inlinephone_otp" placeholder="Enter OTP sent to the number above." pattern="[0-9]{4,6}"/>
+								<input type="hidden" name="inlinephone_verify" value="inlinephone_verify">
+								<input type="submit" name="submit" style="margin:1% 0 3% 0;" value="Validate" class="button" />
+								<input type="submit" name="submit"  style="margin:1% 0 3% 0;" value="Resend OTP" class="button" />
+							</form>
+						</div>
+						<a class="button" id="goBack" href="#">« Go Back to Login</a>
+					</div>
+					</div>
+					<div class="progressBar" id="progressBar">
+						<div class="label-progressBar"><div id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></div></div>
+						<br/><span id="progress_bar"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php }else if(Mage::getSingleton('adminhtml/session')->getShowGoogleAuthSetup()){?>
+		<div id="setupScreen"> 
+			<div class="panel-content" id="googleAuth-screen">	
+				<div class="setup-header"></div>
+				<div class="setup-content">
+					<div id="messages">
+						<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+							<ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+						<?php }?>	
+					</div>
+					<div id="heading"><h2>SETUP GOOGLE AUTHENTICATOR</h2></div>
+					<div id="twofactor-content" style="padding:1% 2%;font-size: 14px;">
+						<div id="ga_table">
+							<div class="ga_section" style="width:175px;">
+								<span id="ga_heading"><h3>SELECT PHONE TYPE</h3></span><hr/>
+								<form name="f" method="post" id="mo2f_app_type_ga_form" action="" >
+									<div id="ga_phone"><input type="radio" style="margin-right:2%;" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+										value="ANDROID" <?php if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"ANDROID")==0) echo 'checked'?> />Android</div>
+									<div id="ga_phone"><input type="radio" style="margin-right:2%;" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+										value="IPHONE" <?php if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"IPHONE")==0) echo 'checked'?> />iPhone</div>
+									<div id="ga_phone"><input type="radio" style="margin-right:2%;" name="mo2f_app_type_radio" onChange="document.getElementById('mo2f_app_type_ga_form').submit()" 
+										value="BLACKBERRY" <?php if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"BLACKBERRY")==0) echo 'checked'?> />BlackBerry</div>
+								</form><br>
+								<a id="goBack" href="#">« Go Back to Login</a>
+								<br>
+							</div>
+							<div class="ga_section" style="border-left:1px solid #B8BCBC;width:445px;">
+								<span id="ga_heading"><h3>SETUP GOOGLE AUTHENTICATOR</h3></span><hr/>
+								<?php if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"ANDROID")==0){?>
+								<div id="mo2f_android_div" >
+									<h4>Install the Google Authenticator App for Android.</h4>
+									<ol>
+										<li>1. On your phone,Go to Google Play Store.</li>
+										<li>2. Search for <b>Google Authenticator.</b>
+										<a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Download from the Google Play Store and install the application.</a>
+										</li>
+									</ol><br>
+									<h4>Now open and configure Google Authenticator.</h4>
+									<ol>
+										<li>1. In Google Authenticator, touch Menu and select "Set up account."</li>
+										<li>2. Select "Scan a barcode". Use your phone's camera to scan this barcode.</li>
+									<center><br><div id="GAQr" ><?php echo '<img src="data:image/jpg;base64,' .Mage::getSingleton('adminhtml/session')->getGAQRCode(). '" />'; ?></div></center>
+									<br></ol>
+									<span class="btn-link" href="" style="font-size:15px;"><b>Can't scan the barcode? Click Here </b></span>
+									<div class="collapse" id="mo2f_scanbarcode_a">
+										<ul>
+											<li>1. In Google Authenticator, touch Menu and select "Set up account."</li>
+											<li>2. Select "Enter provided key"</li>
+											<li>3. In "Enter account name" type your full email address.</li>
+											<li>4. In "Enter your key" type your secret key:</li>
+												<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+													<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+													<?php echo Mage::getSingleton('adminhtml/session')->getGASecret(); ?>
+													</div>
+													<div style="font-size: 80%;color: #666666;">
+													Spaces don't matter.
+													</div>
+												</div>
+											<li>5. Key type: make sure "Time-based" is selected.</li>
+											<li>6. Tap Add.</li>
+										</ul>
+									</div>
+								</div>
+								<?php }else if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"IPHONE")==0){?>
+									<div id="mo2f_iphone_div" >
+									<h4>Install the Google Authenticator app for iPhone.</h4>
+									<ol>
+										<li>1. On your iPhone, tap the App Store icon.</li>
+										<li>2. Search for <b>Google Authenticator.</b>
+										<a href="http://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">Download from the App Store and install it</a>
+										</li>
+									</ol><br/>
+									<h4>Now open and configure Google Authenticator.</h4>
+									<ol>
+										<li>1. In Google Authenticator, tap "+", and then "Scan Barcode."</li>
+										<li>2. Use your phone's camera to scan this barcode.
+											<center><br><div id="GAQr" ><?php echo '<img src="data:image/jpg;base64,' .Mage::getSingleton('adminhtml/session')->getGAQRCode(). '" />'; ?></div></center>
+										</li>
+									</ol><br/>
+									<span class="btn-link" href="" style="font-size:15px;"><b>Can't scan the barcode? Click Here </b></span>
+									<div class="collapse" id="mo2f_scanbarcode_a_i">
+										<ul>
+											<li>1. In Google Authenticator, tap +.</li>
+											<li>2. Key type: make sure "Time-based" is selected.</li>
+											<li>3. In "Account" type your full email address.</li>
+											<li>4. In "Key" type your secret key:</li>
+												<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+													<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+													<?php echo Mage::getSingleton('adminhtml/session')->getGASecret(); ?>
+													</div>
+													<div style="font-size: 80%;color: #666666;">
+													Spaces don't matter.
+													</div>
+												</div>
+											<li>5. Tap Add.</li>
+										</ul>
+									</div>
+									</div>
+								<?php }else if(strcmp(Mage::getSingleton('adminhtml/session')->getGAPhone(),"BLACKBERRY")==0){?>
+									<div id="mo2f_blackberry_div">
+									<h4>Install the Google Authenticator app for BlackBerry</h4>
+									<ol>
+										<li>1. On your phone, open a web browser.Go to <b>m.google.com/authenticator.</b></li>
+										<li>2. Download and install the Google Authenticator application.</li>
+									</ol>
+									<h4>Now open and configure Google Authenticator.</h4>
+									<ul>
+										<li>1. In Google Authenticator, select Manual key entry.</li>
+										<li>2. In "Enter account name" type your full email address.</li>
+										<li>3. In "Enter key" type your secret key:</li>
+											<div style="padding: 10px; background-color: #f9edbe;text-align: center;" >
+												<div style="font-size: 14px; font-weight: bold;line-height: 1.5;" >
+												<?php echo Mage::getSingleton('adminhtml/session')->getGASecret(); ?>
+												</div>
+												<div style="font-size: 80%;color: #666666;">
+												Spaces don't matter.
+												</div>
+											</div>
+										<li>4. Choose Time-based type of key.</li>
+										<li>5. Tap Save.</li>
+									</ul>
+									</div>
+								<?php }?>
+							</div>
+							<div class="ga_section" style="border-left:1px solid #B8BCBC;width:190px;">
+									<span id="ga_heading"><h3>VERIFY AND SAVE</h3></span><hr/>
+									<div style="<?php echo !is_null(Mage::getSingleton('adminhtml/session')->getGAPhone()) ? 'display:block' : 'display:none' ?>;padding-top:5%;">
+										<div>Once you have scanned the barcode, enter the 6-digit verification code generated by the Authenticator app</div><br/>
+										<form name="f" method="post" action="" >
+											<b>Code: </b>
+											<table><td><input type="number" autofocus="true" required="true"  name="google_token" placeholder="Enter Token"/></td></table>
+											<input type="submit" name="validate" id="validate" class="button" style="margin-top:3%;"value="Verify and Save" />
+										</form>
+									</div>
+							</div>
+						</div>
+					</div>
+					<div class="progressBar" id="progressBar">
+						<div class="label-progressBar"><div id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></div></div>
+						<br/><span id="progress_bar"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php }else if(Mage::getSingleton('adminhtml/session')->getShowKBASetup()){?>
+	<div id="setupScreen"> 
+		<div class="panel-content" id="kbaAuth-screen">	
+			<div class="setup-header"></div>
+			<div class="setup-content">
+				<div id="messages">
+					<?php if(Mage::getSingleton('adminhtml/session')->getminiError()){?>
+						<ul class="mini-messages"><li class="error-msg"><ul><li><span><?php echo Mage::getSingleton('adminhtml/session ')->getminiError(); ?></span><a id="error-cancel" href="#">&times;</a></li></ul></li></ul>      
+					<?php }?>	
+				</div>
+			<h2>Configure Second Factor - KBA (Security Questions)</h2>
+			<div id="twofactor-content" style="padding:2% 0">
+			<p><h3>Please choose 3 questions</h3></p>
+			<form name="f" method="post" action="" id="mo2f_kba_setup_form">
+			<table class="mo2f_kba_table" >
+					<tr>
+					<td>No.</td>
+					<td class="mo2f_kba_tb_data">Questions</td>
+					<td>Answers</td>
+					</tr>
+					<tr>
+					<td>
+					<center>1.</center>
+					</td>
+					<td class="mo2f_kba_tb_data">
+						<select name="mo2f_kbaquestion_1" id="mo2f_kbaquestion_1" class="mo2f_kba_ques" required="true"  >
+							<option value="" selected="selected">---------------------Select your question---------------------</option>
+							<option value="What is your first company name?">What is your first company name?</option>
+							<option value="What was your childhood nickname?">What was your childhood nickname?</option>
+							<option value="In what city did you meet your spouse/significant other?">In what city did you meet your spouse/significant other?</option>
+							<option value="What is the name of your favorite childhood friend?">What is the name of your favorite childhood friend?</option>
+							<option value="What school did you attend for sixth grade?">What school did you attend for sixth grade?</option>
+							<option value="In what city or town was your first job?">In what city or town was your first job?</option>
+							<option value="What is your favourite sport?">What is your favourite sport?</option>
+							<option value="Who is your favourite sports player?">Who is your favourite sports player?</option>
+							<option value="What is your grandmother's maiden name?">What is your grandmother's maiden name?</option>
+							<option value="What was your first vehicle's registration number?">What was your first vehicle's registration number?</option>
+						</select>
+					</td>
+					<td>
+						<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans1" id="mo2f_kba_ans1" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" autofocus="true" placeholder="Enter your answer"  />
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<center>2.</center>
+					</td>
+					<td class="mo2f_kba_tb_data">
+						<select name="mo2f_kbaquestion_2" id="mo2f_kbaquestion_2" class="mo2f_kba_ques" required="true">
+							<option value="" selected="selected">---------------------Select your question---------------------</option>
+							<option value="What is your first company name?">What is your first company name?</option>
+							<option value="What was your childhood nickname?">What was your childhood nickname?</option>
+							<option value="In what city did you meet your spouse/significant other?">In what city did you meet your spouse/significant other?</option>
+							<option value="What is the name of your favorite childhood friend?">What is the name of your favorite childhood friend?</option>
+							<option value="What school did you attend for sixth grade?">What school did you attend for sixth grade?</option>
+							<option value="In what city or town was your first job?">In what city or town was your first job?</option>
+							<option value="What is your favourite sport?">What is your favourite sport?</option>
+							<option value="Who is your favourite sports player?">Who is your favourite sports player?</option>
+							<option value="What is your grandmother's maiden name?">What is your grandmother's maiden name?</option>
+							<option value="What was your first vehicle's registration number?">What was your first vehicle's registration number?</option>
+						</select>
+					</td>
+					<td>
+						<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans2" id="mo2f_kba_ans2" title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" placeholder="Enter your answer"  />
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<center>3.</center>
+					</td>
+					<td class="mo2f_kba_tb_data">
+						<input class="mo2f_kba_ques" type="text" name="mo2f_kbaquestion_3" id="mo2f_kbaquestion_3"  required="true" placeholder="Enter your custom question here"/>
+					</td>
+					<td>
+						<input class="mo2f_table_textbox" type="text" name="mo2f_kba_ans3" id="mo2f_kba_ans3"  title="Only alphanumeric letters with special characters(_@.$#&amp;+-) are allowed." pattern="(?=\S)[A-Za-z0-9_@.$#&amp;+-\s]{1,100}" required="true" placeholder="Enter your answer"/>
+					</td>
+				</tr>
+			</table><br>
+				<input type="submit" name="submit"  value="Save" class="button button-primary button-large" />
+			</form>	
+			</div>
+					<div class="progressBar" id="progressBar">
+						<div class="label-progressBar"><div id="label-progressBar"><?php echo Mage::helper('adminhtml')->__('Processing Your Request. Please Wait!') ?></div></div>
+						<br/><span id="progress_bar"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php }?>
+		<form name="f" method="post" id="gobacktologin" action="">
+			<input type="hidden" name="goback_to_login" value="goback_to_login" />
+		</form>
+		<form name="f" method="post" id="mobile_registration_success" action="">
+			<input type="hidden" name="mobile_registration_success" value="success" />
+		</form>
+		<form name="f" method="post" id="mobile_registration_failed" action="">
+			<input type="hidden" name="mobile_registration_failed" value="failed" />
+		</form>
+	</body>
+</html>
