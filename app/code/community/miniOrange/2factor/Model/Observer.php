@@ -182,5 +182,5 @@ class MiniOrange_2factor_Model_Observer
 		$session->unsshowsofttoken();
 		Mage::dispatchEvent('admin_session_user_login_success',array('user'=>$user));
 	}
-    
+	
 }

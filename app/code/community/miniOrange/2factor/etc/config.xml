@@ -8,10 +8,11 @@
     <modules>
         <!-- This must exactly match the namespace and module's folder names, with directory separators replaced by underscores -->
         <MiniOrange_2factor>
-            <!-- The version of our module, starting at 0.0.1 -->
-            <version>0.0.2</version>
+            <!-- The version of our module -->
+            <version>1.0.2</version>
         </MiniOrange_2factor>
     </modules>
+	
 	
 	<!-- we are making changes to the backend -->
 	<admin>
@@ -81,16 +82,7 @@
 		</helpers>  
 		
         <!-- Defining our event observer -->
-        <events>		
-			<admin_system_config_changed_section_miniorange_2factor_options>
-                <observers>
-                    <adminhtml_config_save>
-                        <class>MiniOrange_2factor/observer</class>
-                        <method>changeSystemConfig</method>
-                    </adminhtml_config_save>
-                </observers>
-            </admin_system_config_changed_section_miniorange_2factor_options>     
-			
+        <events>				
 			<controller_action_predispatch>
                 <observers>
                     <miniorange_2factor_login>

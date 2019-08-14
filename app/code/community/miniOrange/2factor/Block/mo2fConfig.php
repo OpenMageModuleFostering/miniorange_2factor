@@ -88,10 +88,6 @@ class MiniOrange_2factor_Block_mo2fConfig extends Mage_Core_Block_Template{
 		return $customer->is_curl_installed();
 	}
 	
-	public function getForgotPassUrl(){
-		$url = $this->getHostURl();
-		return $url.'/moas/idp/userforgotpassword' ;
-	}
 	
 	
 }

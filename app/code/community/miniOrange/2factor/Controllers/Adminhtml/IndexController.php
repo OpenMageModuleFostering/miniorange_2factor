@@ -12,6 +12,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		 Mage::getSingleton('core/session')->unsSuccessMessage();
 		  Mage::getSingleton('admin/session')->unsshowLoginSettings();
 		  Mage::getSingleton('admin/session')->unsOTPsent();
+		  Mage::getSingleton('admin/session')->unsEnteredEmail();
   }
   
    
@@ -20,6 +21,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		$customer = Mage::helper('MiniOrange_2factor/mo2fUtility');
 		if($customer->is_curl_installed()){
 			$email = $params['email'];
+			Mage::getSingleton('admin/session')->setEnteredEmail($email);
 			$password = $params['password'];
 			$phone = $params['phone'];
 			$confirmPassword = $params['confirmPassword'];	
@@ -85,6 +87,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
     }
 	
@@ -130,6 +133,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
     }
 
@@ -138,39 +142,53 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		$customer = Mage::helper('MiniOrange_2factor/mo2fUtility');
 		if($customer->is_curl_installed()){
 			$email = $params['loginemail'];
+			Mage::getSingleton('admin/session')->setEnteredEmail($email);
 			$password = $params['loginpassword'];
+			$submit = $params['submit'];
 			$admin = Mage::getSingleton('admin/session')->getUser();
 			$id = $admin->getUserId();
-			$content = $customer->get_customer_key($email,$password);
-			$customerKey = json_decode($content, true);
-			if(json_last_error() == JSON_ERROR_NONE) {
-				$this->saveConfig('miniorange_2factor_email',$email,$id);
-				$collection = Mage::getModel('admin/user')->getCollection();
-				foreach($collection as $item){
-					$ids=$item->getData('user_id');
-					$this->saveConfig('miniorange_2factor_customer_key',$customerKey['id'],$ids);
-					$this->saveConfig('miniorange_2factor_api_key',$customerKey['apiKey'],$ids);
-					$this->saveConfig('miniorange_2factor_token',$customerKey['token'],$ids);
-					if($ids!=$id){
-						$this->saveConfig('miniorange_2factor_validated',0,$ids);
+			if(strcasecmp($submit,"Submit") == 0){
+				$content = $customer->get_customer_key($email,$password);
+				$customerKey = json_decode($content, true);
+				if(json_last_error() == JSON_ERROR_NONE) {
+					$this->saveConfig('miniorange_2factor_email',$email,$id);
+					$collection = Mage::getModel('admin/user')->getCollection();
+					foreach($collection as $item){
+						$ids=$item->getData('user_id');
+						$this->saveConfig('miniorange_2factor_customer_key',$customerKey['id'],$ids);
+						$this->saveConfig('miniorange_2factor_api_key',$customerKey['apiKey'],$ids);
+						$this->saveConfig('miniorange_2factor_token',$customerKey['token'],$ids);
+						if($ids!=$id){
+							$this->saveConfig('miniorange_2factor_validated',0,$ids);
+						}
 					}
+					$this->saveConfig('miniorange_2factor_pass',"",$id);
+					$this->saveConfig('miniorange_2factor_show_otp',0,$id);
+					$this->saveConfig('miniorange_2factor_show_configure',1,$id);
+					$this->saveConfig('miniorange_2factor_validated',1,$id);
+					$this->saveConfig('miniorange_2factor_login',0,$id);
+					$this->displayMessage('Registration Successful. Please Configure your mobile below',"SUCCESS");
+					$this->redirect("miniorange_2factor/adminhtml_index/index");
 				}
-				$this->saveConfig('miniorange_2factor_pass',"",$id);
-				$this->saveConfig('miniorange_2factor_show_otp',0,$id);
-				$this->saveConfig('miniorange_2factor_show_configure',1,$id);
-				$this->saveConfig('miniorange_2factor_validated',1,$id);
-				$this->saveConfig('miniorange_2factor_login',0,$id);
-				$this->displayMessage('Registration Successful. Please Configure your mobile below',"SUCCESS");
+				else{
+					$this->saveConfig('miniorange_2factor_login',1,$id);
+					$this->displayMessage('Invalid Credentials',"ERROR");
+					$this->redirect("miniorange_2factor/adminhtml_index/index");
+				}
+			}
+			else if(strcasecmp($submit,"Forgot Password?") == 0){
+				$this->forgotPass($email);
+				$this->saveConfig('miniorange_2factor_login',1,$id);
 				$this->redirect("miniorange_2factor/adminhtml_index/index");
 			}
 			else{
-				$this->saveConfig('miniorange_2factor_login',1,$id);
-				$this->displayMessage('Invalid Credentials',"ERROR");
+				$this->saveConfig('miniorange_2factor_login',0,$id);
 				$this->redirect("miniorange_2factor/adminhtml_index/index");
 			}
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
     }
 	
@@ -202,6 +220,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			}
 			else{
 				$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+				$this->redirect("miniorange_2factor/adminhtml_index/index");
 			}	
 	}
 	
@@ -240,6 +259,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
     }
 	
@@ -254,8 +274,10 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
+	
 	
 	public function registrationSuccessAction(){
 		$customer = Mage::helper('MiniOrange_2factor/mo2fUtility');
@@ -271,6 +293,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
 	
@@ -294,6 +317,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
 	
@@ -319,6 +343,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
 	
@@ -397,6 +422,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					$this->displayMessage('Registration Complete. Please Configure your mobile',"SUCCESS");
 				} else {
 					$this->displayMessage('An error occurred while creating customer',"ERROR");
+					$this->redirect("miniorange_2factor/adminhtml_index/index");
 				}
 			}else{
 					$collection = Mage::getModel('admin/user')->getCollection();
@@ -420,6 +446,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
 	
@@ -440,10 +467,23 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		}
 		else{
 			$this->displayMessage('cURL is not enabled. Please <a id="cURL" href="#cURLfaq">click here</a> to see how to enable cURL.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
 		}
 	}
 	
-	
+	private function forgotPass($email){
+		$customer = Mage::helper('MiniOrange_2factor/mo2fUtility');
+		$params = $this->getRequest()->getParams();
+		$content = json_decode($customer->forgot_password($email,$this->defaultCustomerKey,$this->defaultApiKey), true); 
+		if(strcasecmp($content['status'], 'SUCCESS') == 0){
+			$this->displayMessage('Your new password has been generated and sent to '.$email.'.',"SUCCESS");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
+		}
+		else{
+			$this->displayMessage('Sorry we encountered an error while reseting your password.',"ERROR");
+			$this->redirect("miniorange_2factor/adminhtml_index/index");
+		}
+	}
 	
 		
 }
