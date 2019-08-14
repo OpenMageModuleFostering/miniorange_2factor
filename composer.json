@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/miniOrange_2factor",
+    "type": "magento-module",
+    "license": "GNU-General-Public-License-(GPL)",
+    "homepage": "",
+    "description": "Enable Two Factor Authentication (2FA)- Supports QR code, Soft token, otp over sms).",
+    "authors": [
+    {
+        "name": "miniOrange inc.",
+        "email": "info@miniorange.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

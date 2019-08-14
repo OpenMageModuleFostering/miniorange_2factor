@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<layout>
+  <miniorange_2factor_adminhtml_index_index>
+     <reference name="content">
+             <block type="MiniOrange_2factor/mo2fConfig"  name="miniorange_2factor_mo2fConfig"
+                  template="miniorange_2factor/mo2fConfig.phtml" />
+      </reference>
+   </miniorange_2factor_adminhtml_index_index>
+</layout>
