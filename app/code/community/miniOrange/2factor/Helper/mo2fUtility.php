@@ -23,10 +23,10 @@ Contains Request Calls to Customer service.
 **/
 class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 	
-	public $email;
-	public $phone;
-	public $hostname = "https://auth.miniorange.com";
-	public $pluginName = 'Magento 2 Factor Authentication Plugin';
+	private $email;
+	private $phone;
+	private $hostname = "https://auth.miniorange.com";
+	private $pluginName = 'Magento 2 Factor Authentication Plugin';
 	
 	function check_customer($email){
 		$url 	= $this->hostname . '/moas/rest/customer/check-if-exists';

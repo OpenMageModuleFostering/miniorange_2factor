@@ -2,8 +2,7 @@
 
 class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Controller_Action
 {
-  private $defaultCustomerKey = "16352";												
-  private $defaultApiKey = "AJG97LGpOVVwFUuuPSij5IH6Kvlu6qEj";
+
   
   public function indexAction(){
         $this->loadLayout();
@@ -36,7 +35,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 				$id = $admin->getUserId();
 				$content = json_decode($customer->check_customer($email), true);
 				if( strcasecmp( $content['status'], 'CUSTOMER_NOT_FOUND') == 0 ){ 
-				$content = json_decode($customer->send_otp_token($email,'EMAIL',$this->defaultCustomerKey,$this->defaultApiKey), true); //send otp for verification
+				$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); //send otp for verification
 					if(strcasecmp($content['status'], 'SUCCESS') == 0){
 						Mage::getSingleton('admin/session')->setMytextid($content['txId']);
 						Mage::getSingleton('admin/session')->setOTPsent(1);
@@ -45,7 +44,6 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 						$this->saveConfig('miniorange_2factor_email',$email,$id);
 						$this->saveConfig('miniorange_2factor_pass',$password,$id);
 						$this->saveConfig('miniorange_2factor_phone',$phone,$id);
-						$this->saveConfig('miniorange_2factor_admin_registered',$id,$id);
 						$this->displayMessage('OTP has been sent to your Email. Please check your mail and enter the otp below.',"SUCCESS");
 						$this->redirect("miniorange_2factor/adminhtml_index/index");
 					}
@@ -68,7 +66,8 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 						$storeConfig = new Mage_Core_Model_Config();
 						$storeConfig ->saveConfig('miniOrange/2factor/customerKey',$customerKey['id'], 'default', 0);
 						$storeConfig ->saveConfig('miniOrange/2factor/apiKey',$customerKey['apiKey'], 'default', 0);
-						$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);		
+						$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);	
+						$storeConfig ->saveConfig('miniOrange/2factor/mainAdmin',$id, 'default', 0);						
 						$this->saveConfig('miniorange_2factor_pass',"",$id);
 						$this->saveConfig('miniorange_2factor_show_otp',0,$id);
 						$this->saveConfig('miniorange_2factor_show_configure',1,$id);
@@ -104,11 +103,11 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$phone = Mage::getSingleton('core/session')->getaddPhone();
 			if(strcmp($otp,"")!=0){
 				$transactionId  =  Mage::getSingleton('admin/session')->getMytextid();
-				$content = json_decode($customer->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $this->defaultCustomerKey, $this->defaultApiKey),true);
-				
+				$content = json_decode($customer->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $helper->getdefaultCustomerKey(), $helper->getdefaultApiKey()),true);
 					if(strcasecmp($content['status'], 'SUCCESS') == 0) { //OTP validated and generate QRCode
 						$adminregistered = $helper->getConfig('mainAdmin',$id);
-						if($adminregistered!="" && $adminregistered==$id){
+						if($adminregistered==null){
+							Mage();
 							$this->mo2f_create_customer();
 						}
 						else{
@@ -165,7 +164,8 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					$storeConfig = new Mage_Core_Model_Config();
 					$storeConfig ->saveConfig('miniOrange/2factor/customerKey',$customerKey['id'], 'default', 0);
 					$storeConfig ->saveConfig('miniOrange/2factor/apiKey',$customerKey['apiKey'], 'default', 0);
-					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);		
+					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);
+					$storeConfig ->saveConfig('miniOrange/2factor/mainAdmin',$id, 'default', 0);					
 					$this->saveConfig('miniorange_2factor_pass',"",$id);
 					$this->saveConfig('miniorange_2factor_show_otp',0,$id);
 					$this->saveConfig('miniorange_2factor_show_configure',1,$id);
@@ -203,9 +203,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			if($helper->is_curl_installed()){
 				$email = $params['additional_email'];
 				$phone = $params['additional_phone'];
-				$admin = Mage::getSingleton('admin/session')->getUser();
-				$id = $admin->getUserId();
-				$content = json_decode($customer->send_otp_token($email,'EMAIL',$this->defaultCustomerKey,$this->defaultApiKey), true); 
+				$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); 
 				if(strcasecmp($content['status'], 'SUCCESS') == 0){
 					$admin = Mage::getSingleton('admin/session')->getUser();
 					$id = $admin->getUserId();
@@ -345,12 +343,11 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$admin = Mage::getSingleton('admin/session')->getUser();
 			$id = $admin->getUserId();
 			$email = $helper->getConfig('email',$id);
-			$content = json_decode($customer->send_otp_token($email,'EMAIL',$this->defaultCustomerKey,$this->defaultApiKey), true); //send otp for verification
+			$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); //send otp for verification
 			if(strcasecmp($content['status'], 'SUCCESS') == 0){
 				Mage::getSingleton('admin/session')->setMytextid($content['txId']);
 				$this->saveConfig('miniorange_2factor_show_otp',1,$id);
 				$this->saveConfig('miniorange_2factor_login',0,$id);
-				$this->saveConfig('miniorange_2factor_admin_registered',$id,$id);
 				$this->displayMessage('OTP has been sent to your Email. Please check your mail and enter the otp below.',"SUCCESS");
 				$this->redirect("miniorange_2factor/adminhtml_index/index");
 			}
@@ -377,7 +374,6 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		$id = $admin->getUserId();
 		$this->saveConfig('miniorange_2factor_show_otp',null,$id);
 		$this->saveConfig('miniorange_2factor_login',null,$id);
-		$this->saveConfig('miniorange_2factor_admin_registered',null,$id);
 		$this->saveConfig('miniorange_2factor_email',"",$id);
 		$this->saveConfig('miniorange_2factor_pass',"",$id);
 		$this->saveConfig('miniorange_2factor_phone',"",$id);
@@ -432,7 +428,8 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					$storeConfig = new Mage_Core_Model_Config();
 					$storeConfig ->saveConfig('miniOrange/2factor/customerKey',$customerKey['id'], 'default', 0);
 					$storeConfig ->saveConfig('miniOrange/2factor/apiKey',$customerKey['apiKey'], 'default', 0);
-					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);		
+					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);	
+					$storeConfig ->saveConfig('miniOrange/2factor/mainAdmin',$id, 'default', 0);
 					$this->saveConfig('miniorange_2factor_pass',"",$id);
 					$this->saveConfig('miniorange_2factor_show_otp',0,$id);
 					$this->saveConfig('miniorange_2factor_show_configure',1,$id);
@@ -452,7 +449,8 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					$storeConfig = new Mage_Core_Model_Config();
 					$storeConfig ->saveConfig('miniOrange/2factor/customerKey',$customerKey['id'], 'default', 0);
 					$storeConfig ->saveConfig('miniOrange/2factor/apiKey',$customerKey['apiKey'], 'default', 0);
-					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);		
+					$storeConfig ->saveConfig('miniOrange/2factor/2factorToken',$customerKey['token'], 'default', 0);	
+					$storeConfig ->saveConfig('miniOrange/2factor/mainAdmin',$id, 'default', 0);
 					$this->saveConfig('miniorange_2factor_pass',"",$id);
 					$this->saveConfig('miniorange_2factor_show_otp',0,$id);
 					$this->saveConfig('miniorange_2factor_login',0,$id);
@@ -492,7 +490,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 	private function forgotPass($email){
 		$customer = Mage::helper('MiniOrange_2factor/mo2fUtility');
 		$params = $this->getRequest()->getParams();
-		$content = json_decode($customer->forgot_password($email,$this->defaultCustomerKey,$this->defaultApiKey), true); 
+		$content = json_decode($customer->forgot_password($email,$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); 
 		if(strcasecmp($content['status'], 'SUCCESS') == 0){
 			$this->displayMessage('Your new password has been generated and sent to '.$email.'.',"SUCCESS");
 			$this->redirect("miniorange_2factor/adminhtml_index/index");

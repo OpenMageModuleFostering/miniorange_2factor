@@ -184,12 +184,15 @@ class MiniOrange_2factor_Model_Observer
 		Mage::dispatchEvent('admin_session_user_login_success',array('user'=>$user));
 	}
 	
-	
-	//-----------------//
-	public function customerLogin(Varien_Event_Observer $observer){				
+	public function customerLogin(Varien_Event_Observer $observer){
 		$request = Mage::app()->getRequest();
 		$session = Mage::getSingleton('customer/session');
-		$session->setBeforeAuthUrl(Mage::getUrl('twofactorauth/Index/configureTwoFactorPage'));			
+		$customer = $session->getCustomer();
+		$id = $customer->getId();
+		if (Mage::helper('MiniOrange_2factor')->getConfig('isCustomerEnabled') && !Mage::helper('MiniOrange_2factor')->getConfig('customer_mobile_configured',$id)) {
+			Mage::helper('MiniOrange_2factor')->displayMessage('Admin has Enabled Two Factor Authentication for your account. Please configure your account below.','NOTICE');
+			$session->setAfterAuthUrl(Mage::getUrl('twofactorauth/Index/configureTwoFactorPage'));			
+		}
 	}
 	
 	
@@ -199,14 +202,13 @@ class MiniOrange_2factor_Model_Observer
 				throw Mage::exception('Mage_Core','Authentication Failed! Please try again!',2);
 		}
        
-	   if (Mage::helper('MiniOrange_2factor')->getConfig('isCustomerEnabled') && Mage::helper('MiniOrange_2factor')->getConfig('miniorange_mobileconfigured')) {
+		if (Mage::helper('MiniOrange_2factor')->getConfig('isCustomerEnabled')) {
             $redirectUrl = Mage::getModel('core/url')->getUrl('twofactorauth/Index/validationPage'); 
 			$session = Mage::getSingleton('customer/session');
 			$session->setOriginalAfterAuthUrl($session->getAfterAuthUrl());
-            $session->setAfterAuthUrl($redirectUrl);
+            $session->setBeforeAuthUrl($redirectUrl);
         }
 		else{
-			Mage::helper('MiniOrange_2factor')->displayMessage('Admin has Enabled Two Factor Authentication for your account. Please configure your account below.','NOTICE');
 			return $this;
 		}
 		

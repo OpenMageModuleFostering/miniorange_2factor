@@ -87,17 +87,15 @@ class MiniOrange_2factor_Block_mo2fConfig extends Mage_Core_Block_Template{
 	}
 	
 	public function getConfig($config,$id=""){
-		$customer = Mage::helper('MiniOrange_2factor');
-		if($id!=""){
-			return $customer->getConfig($config,$id);
-		}
-		else if( !Mage::getSingleton('customer/session')->isLoggedIn() ) {
+		$user = Mage::helper('MiniOrange_2factor');
+		if( !Mage::getSingleton('customer/session')->isLoggedIn() ) {
 			$admin = Mage::getSingleton('admin/session')->getUser();
 			$id = $admin->getUserId();
-			return $customer->getConfig($config,$id);
+			return $user->getConfig($config,$id);
 		}
 		else{
-			return $customer->getConfig($config,$id);
+			$id = Mage::getSingleton('customer/session')->getCustomer()->getId();
+			return $user->getConfig($config,$id);
 		}
 	}
 	

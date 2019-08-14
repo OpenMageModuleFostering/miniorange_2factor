@@ -3,7 +3,7 @@
     "type": "magento-module",
     "license": "GNU-General-Public-License-(GPL)",
     "homepage": "",
-    "description": "Enable Two Factor Authentication (2FA)- Supports QR code, Soft token, otp over sms).",
+    "description": "This plugin enablesTwo Factor Authentication for admins for your Magento backend.",
     "authors": [
     {
         "name": "miniOrange inc.",

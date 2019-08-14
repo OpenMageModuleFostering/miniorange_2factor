@@ -14,7 +14,6 @@ $installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorang
 $installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorange_2factor_show_configure', 'int null');
 $installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorange_2factor_validated', 'int null');
 $installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorange_2factor_login', 'int null');
-$installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorange_2factor_admin_registered', 'int null');
 $installer->getConnection()->addColumn($this->getTable('admin/user'), 'miniorange_2factor_downloaded_app', 'int null');
 
 

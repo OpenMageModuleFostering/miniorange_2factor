@@ -1,7 +1,9 @@
 <?php
 class MiniOrange_2factor_Helper_Data extends Mage_Core_Helper_Abstract
 {
-	public $hostname = "https://auth.miniorange.com";
+	private $hostname = "https://auth.miniorange.com";
+	private $defaultCustomerKey = "16352";												
+    private $defaultApiKey = "AJG97LGpOVVwFUuuPSij5IH6Kvlu6qEj";
 	
 	function adminExists($username){
 		$adminuser = Mage::getModel('admin/user');
@@ -17,6 +19,16 @@ class MiniOrange_2factor_Helper_Data extends Mage_Core_Helper_Abstract
 	function getHostURl(){
 		return $this->hostname;
 	}
+	
+	function getdefaultCustomerKey(){
+		return $this->defaultCustomerKey;
+	}
+	
+	
+	function getdefaultApiKey(){
+		return $this->defaultApiKey;
+	}
+	
 	
 	function getAdmin($username){
 		$adminuser = Mage::getModel('admin/user');
@@ -69,7 +81,7 @@ class MiniOrange_2factor_Helper_Data extends Mage_Core_Helper_Abstract
 				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_login');
 				break;
 			case 'mainAdmin':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_admin_registered');
+				$result =   $result = Mage::getStoreConfig('miniOrange/2factor/mainAdmin');
 				break;
 			case 'downloaded':
 				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_downloaded_app');
@@ -77,11 +89,14 @@ class MiniOrange_2factor_Helper_Data extends Mage_Core_Helper_Abstract
 			case 'phone':
 				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_phone');
 				break;
-			case 'customer_mobile_configured':
+			case 'customer_phone':
 				$result =   Mage::getModel('customer/customer')->load($id)->getData('miniorange_phone');
 				break;
-			case 'customer_phone':
+			case 'customer_mobile_configured':
 				$result =   Mage::getModel('customer/customer')->load($id)->getData('miniorange_mobileconfigured');
+				break;
+			case 'miniorange_email':
+				$result =   Mage::getModel('customer/customer')->load($id)->getData('miniorange_email');
 				break;
 			default:
 				return;
