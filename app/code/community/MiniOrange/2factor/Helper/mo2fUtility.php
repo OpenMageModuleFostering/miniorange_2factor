@@ -25,7 +25,7 @@ class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 	
 	public $email;
 	public $phone;
-	public $hostname = "https://test.miniorange.com";
+	public $hostname = "https://auth.miniorange.com";
 	
 	
 	function getHostURl(){
