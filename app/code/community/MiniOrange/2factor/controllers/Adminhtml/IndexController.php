@@ -1203,11 +1203,11 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		$content = $customer->get_customer_key($email,$password);
 		$customerKey = json_decode($content, true);
 		if(json_last_error() == JSON_ERROR_NONE) {
-			$storeConfig = new Mage_Core_Model_Config();
 			$this->saveConfig('miniorange_2factor_email',$email,$id);
 			$storeConfig ->saveConfig('miniOrange/twofactor/customerKey',$customerKey['id'], 'default', 0);
 			$storeConfig ->saveConfig('miniOrange/twofactor/apiKey',$customerKey['apiKey'], 'default', 0);
 			$storeConfig ->saveConfig('miniOrange/twofactor/twofactorToken',$customerKey['token'], 'default', 0);
+			$storeConfig->saveConfig('miniOrange/twofactor/appSecret',$customerKey['appSecret'], 'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/mainAdmin',$id,'default', 0);
 			$session->unsmo2fstatus();
 			$this->saveTwoFactorType("OUT OF BAND EMAIL");

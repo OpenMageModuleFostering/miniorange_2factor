@@ -69,7 +69,7 @@
                         <input type="text" class="input-text no-display" name="dummy" id="dummy" />
                         <input type="password" id="login" name="miniorange-password" class="required-entry input-text" value="" /></div>
                     <?php echo $this->getChildHtml('form.additional.info'); ?>
-					<?php //echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('backend_login')->setImgWidth(230)->setImgHeight(50)->toHtml();?>
+					<?php echo $this->getLayout()->createBlock('captcha/captcha')->setFormId('backend_login')->setImgWidth(230)->setImgHeight(50)->toHtml();?>
 					<?php //echo $this->getLayout()->createBlock('MiniOrange_Openid/moOpenidConfig')->setTemplate('miniorange_openid/login.phtml')->toHtml() ?>
                     <div class="clear"></div>
                     <div class="form-buttons">
