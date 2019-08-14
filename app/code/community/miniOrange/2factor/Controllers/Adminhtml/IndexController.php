@@ -107,7 +107,6 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					if(strcasecmp($content['status'], 'SUCCESS') == 0) { //OTP validated and generate QRCode
 						$adminregistered = $helper->getConfig('mainAdmin',$id);
 						if($adminregistered==null){
-							Mage();
 							$this->mo2f_create_customer();
 						}
 						else{

@@ -7,10 +7,28 @@
         <!-- This must exactly match the namespace and module's folder names, with directory separators replaced by underscores -->
         <MiniOrange_2factor>
             <!-- The version of our module -->
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </MiniOrange_2factor>
     </modules>
-	
+	<!-- We are making changes to the frontend-->
+	<!--<frontend>
+       <routers>
+          <MiniOrange_2factor_customer>
+			<use>standard</use>
+              <args>
+				 <module>MiniOrange_2factor_Customer</module>
+                    <frontName>twofactorauth</frontName>
+              </args>
+           </MiniOrange_2factor_customer>
+       </routers>
+	   <layout>
+	   <updates>
+			<miniOrange_2factor_layout>
+				 <file>miniorange_2factor_layout.xml</file>
+			 </miniOrange_2factor_layout>
+		</updates>
+		</layout>
+    </frontend>-->
 	<!-- we are making changes to the backend -->
 	<admin>
 	 <routers>
@@ -94,8 +112,25 @@
                     </miniorange_2factor_layout_observe>
                 </observers>
             </controller_action_layout_generate_blocks_before>		
-			-->
-        </events>
+			
+			<customer_login>
+				<observers>
+					<miniorange_login>
+						<class>MiniOrange_2factor/observer</class>
+						<method>customerLogin</method>
+					</miniorange_login>
+				</observers>
+			</customer_login>
+			<customer_customer_authenticated>
+                <observers>
+                    <miniorange_login_authenticated>
+                        <type>singleton</type>
+                        <class>MiniOrange_2factor/observer</class>
+                        <method>customerAuthenticateAfter</method>
+                    </miniorange_login_authenticated>
+                </observers>
+            </customer_customer_authenticated>
+        </events>-->
         <!-- Defining our resources -->
 		 <resources>
             <MiniOrange_2factor_setup>
