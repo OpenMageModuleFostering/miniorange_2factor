@@ -7,7 +7,7 @@
         <!-- This must exactly match the namespace and module's folder names, with directory separators replaced by underscores -->
         <MiniOrange_2factor>
             <!-- The version of our module -->
-            <version>1.1.0</version>
+            <version>1.1.1</version>
         </MiniOrange_2factor>
     </modules>
 	<!-- We are making changes to the frontend -->
@@ -137,7 +137,7 @@
 			<admin_user_authenticate_before>
                 <observers>
                     <captcha>
-                        <class>MiniOrange_2factor/observer</class>
+                        <class>MiniOrange_2factor/Observer</class>
                         <method>checkUserLoginBackend</method>
                     </captcha>
                 </observers>

@@ -64,7 +64,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$hidden = array_key_exists('hidden', $params) ? $params['hidden'] : "";
 			//$admin = $session->getUser();
 			$id = $this->getId();
-			if(strcasecmp($submit,"validate") == 0){
+			if(strcasecmp($submit,"submit") == 0){
 				$content = $customer->get_customer_key($email,$password);
 				$customerKey = json_decode($content, true);
 				if(json_last_error() == JSON_ERROR_NONE) {
@@ -1207,7 +1207,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$this->saveConfig('miniorange_2factor_email',$email,$id);
 			$storeConfig ->saveConfig('miniOrange/twofactor/customerKey',$customerKey['id'], 'default', 0);
 			$storeConfig ->saveConfig('miniOrange/twofactor/apiKey',$customerKey['apiKey'], 'default', 0);
-			$storeConfig ->saveConfig('miniOrange/twofactor/token',$customerKey['token'], 'default', 0);
+			$storeConfig ->saveConfig('miniOrange/twofactor/twofactorToken',$customerKey['token'], 'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/mainAdmin',$id,'default', 0);
 			$session->unsmo2fstatus();
 			$this->saveTwoFactorType("OUT OF BAND EMAIL");
@@ -1236,7 +1236,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$this->saveConfig('miniorange_2factor_Admin_enable',1,$id);
 			$storeConfig->saveConfig('miniOrange/twofactor/customerKey',$customerKey['id'], 'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/apiKey',$customerKey['apiKey'], 'default', 0);
-			$storeConfig->saveConfig('miniOrange/twofactor/token',$customerKey['token'], 'default', 0);
+			$storeConfig->saveConfig('miniOrange/twofactor/twofactorToken',$customerKey['token'], 'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/appSecret',$customerKey['appSecret'], 'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/mainAdmin',$id,'default', 0);
 			$storeConfig->saveConfig('miniOrange/twofactor/admin/inline_registration','1', 'default', 0);
