@@ -3,10 +3,10 @@
     "type": "magento-module",
     "license": "GNU-General-Public-License-(GPL)",
     "homepage": "",
-    "description": "Effortless Two-Factor Authentication Setup. Supports Email, SMS, Qr, Google Authenticator. Free 30 day trial.",
+    "description": "Effortless Two-Factor Authentication Setup. Supports Email, SMS, Qr, Google Authenticator, etc.",
     "authors": [
     {
-        "name": "miniOrange",
+        "name": "miniOrange inc.",
         "email": "info@miniorange.com"
     }
 ],

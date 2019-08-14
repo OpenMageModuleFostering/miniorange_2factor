@@ -1,0 +1,369 @@
+#error-cancel,
+.button,
+.setup-header a,
+.setup-header a:hover,
+input[type=submit] {
+    text-decoration: none
+}
+
+.label-progressBarWait {
+    margin: 4%;
+    text-transform: uppercase
+}
+
+.miniorange-password,
+.miniorange-username {
+    display: inline;
+    float: left;
+    width: 50%
+}
+
+.mo2f_kba_table {
+    padding: 0 2%
+}
+
+#miniorange-button {
+    margin-top: 1%;
+    float: right
+}
+
+#setupScreen,
+.center {
+    font-family: 'ARS Maquette', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    width: 100%
+}
+
+#choose_method {
+    padding-top: 2%
+}
+
+#choose_method #radio {
+    margin-left: 2%;
+    margin-bottom: 1%
+}
+
+.center {
+    display: table
+}
+
+#showQrCode {
+    margin: auto;
+    text-align: center
+}
+
+#setupScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, .5)
+}
+
+.label {
+    float: left
+}
+
+.setup-content {
+    padding-top: 1%;
+    height: 79%
+}
+
+.setup-footer,
+.setup-header {
+    padding: 1%;
+    position: relative;
+    height: 6%;
+    background: #D0D0D0
+}
+
+.setup-header {
+    border-radius: 7px 7px 0 0;
+    font-size: 18px;
+    font-weight: 700
+}
+
+.setup-footer {
+    border-radius: 0 0 7px 7px
+}
+
+.setup-header a {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 1%
+}
+
+#authform,
+.form #email {
+    float: left;
+    width: 100%
+}
+
+.setup-header a:hover {
+    color: #F0F
+}
+
+.form a {
+    margin-bottom: 4%;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle
+}
+
+.button {
+    padding: 8px 40px;
+    cursor: pointer;
+    font-size: 14px
+}
+
+.panel-content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+    overflow: visible;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 4px 4px 3px #484848
+}
+
+#kbaAuth-screen,
+#phoneValidation-screen,
+#setup-before {
+    width: 580px;
+    height: 370px;
+    margin: -200px auto 0 -300px
+}
+
+#mobileAuth-screen {
+    width: 730px;
+    height: 480px;
+    margin: -245px auto 0 -365px
+}
+
+#googleAuth-screen {
+    width: 900px;
+    height: 620px;
+    margin: -310px auto 0 -450px
+}
+
+.progressBar {
+    display: none;
+    margin: 2% auto
+}
+
+.progressBarWait {
+    display: block;
+    margin: 0 auto
+}
+
+#label-progressBar,
+#label-progressBar-forgotphone {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 15px
+}
+
+#forgotPhone,
+#otpoversms,
+#softoken {
+    padding: 5%
+}
+
+.info {
+    font-size: 15px;
+    margin-bottom: 3%;
+    color: #ea7601
+}
+
+#forgotPhoneOtp,
+#smsotp,
+#softokeninput {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-size: 13px
+}
+
+input[type=submit] {
+    margin-bottom: 5%;
+    font-size: 15px;
+    padding: 8px 20px;
+    border-radius: 3px;
+    border: 1px solid #FFF;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    background-color: #f7934d
+}
+
+input[type=number],
+input[type=text],
+select,
+textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    box-shadow: 1px 1px 4px #ebebeb;
+    -moz-box-shadow: 1px 1px 4px #ebebeb;
+    -webkit-box-shadow: 1px 1px 4px #ebebeb;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    padding: 7px;
+    outline: 0;
+    width: 100%
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0
+}
+
+input[type=number] {
+    -moz-appearance: textfield
+}
+
+input:focus,
+textarea:focus {
+    border: 1px solid #ff8500
+}
+
+#authform {
+    margin-top: 1%
+}
+
+.mini-messages li {
+    margin: 0 5%;
+    min-height: 23px!important;
+    padding: 4px 0 1px 8px!important;
+    font-weight: 700!important;
+    text-align: left
+}
+
+#error-cancel {
+    color: red;
+    font-size: 21px;
+    float: right
+}
+
+#heading {
+    margin-top: 2%
+}
+
+#progress_bar {
+    background: url(http://auth.miniorange.com/moas/images/ajax-loader4.gif) no-repeat;
+    display: block;
+    margin: 3% auto;
+    height: 140px;
+    width: 140px
+}
+
+.miniorange_trust_device_button {
+    width: 25%;
+    height: 30px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 28px;
+    padding: 0 12px 2px;
+    border-width: 1px;
+    color: #fff;
+    border-radius: 3px;
+    white-space: nowrap
+}
+
+#ga_table {
+    width: 100%
+}
+
+#QRCode,
+#configureMobileScreen,
+#configurephone,
+#downloadscreen,
+#ga_table {
+    text-align: left
+}
+
+.panel-body {
+    background-color: #E0E0E0;
+    padding: 2% 0 1% 2%
+}
+
+#displayQrCode {
+    background: #F7F7F7;
+    border-radius: 4px;
+    height: 175px;
+    margin-top: 1%;
+    padding-top: 3%
+}
+
+#displayQrCode>img {
+    margin-left: -1%;
+    height: 180px
+}
+
+.intl-number-input input {
+    height: 30px;
+    padding-left: 40px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    -moz-box-shadow: 1px 1px 4px #ebebeb;
+    -webkit-box-shadow: 1px 1px 4px #ebebeb;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    outline: 0
+}
+
+.intl-number-input .flag-dropdown .selected-flag {
+    margin: 7px;
+    padding: 0
+}
+
+.error-msg {
+    border-radius: 2px
+}
+
+.intl-number-input input,
+select,
+td>input,
+textarea {
+    box-sizing: border-box;
+    box-shadow: 1px 1px 4px #ebebeb
+}
+
+div.ga_section {
+    min-height: 430px;
+    padding: 1%;
+    float: left;
+    font-size: 12px
+}
+
+#ga_heading {
+    text-align: center;
+    font-size: 13px
+}
+
+#ga_phone {
+    margin-top: 5%
+}
+
+#mo2f_android_div,
+#mo2f_blackberry_div,
+#mo2f_iphone_div {
+    padding-top: 2%
+}
+
+.collapse {
+    display: none
+}
+
+.btn-link:hover {
+    color: #ea7601;
+    cursor: pointer
+}

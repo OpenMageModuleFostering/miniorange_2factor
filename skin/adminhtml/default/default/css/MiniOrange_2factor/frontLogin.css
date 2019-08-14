@@ -1,0 +1,336 @@
+.label-progressBar {
+    margin-top: 3%
+}
+
+#error-cancel,
+#slide,
+.button,
+.login-header a,
+.login-header a:hover {
+    text-decoration: none
+}
+
+#miniorange-button {
+    margin-top: 1%;
+    float: right
+}
+
+#logo-miniorange {
+    width: 44%;
+    margin-left: 3%;
+    margin-top: 2%
+}
+
+#loginScreen,
+.center {
+    text-align: center;
+    width: 100%
+}
+
+.center {
+    display: table
+}
+
+#showQrCode {
+    margin: 5%
+}
+
+#loginScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 1)
+}
+
+.label {
+    font-weight: 700;
+    font-size: 15px;
+    float: left;
+    padding-left: 5%
+}
+
+.login-content {
+    height: 77%
+}
+
+.login-footer,
+.login-header {
+    padding: 1%;
+    position: relative;
+    height: 10%;
+    background: #D0D0D0
+}
+
+.login-header {
+    border-radius: 7px 7px 0 0;
+    font-size: 18px;
+    font-weight: 700;
+    height: 11%
+}
+
+.login-footer {
+    border-radius: 0 0 7px 7px
+}
+
+.login-header a {
+    float: right;
+    cursor: pointer;
+    font-size: 20px
+}
+
+.login-header a:hover {
+    color: #F0F
+}
+
+.form a {
+    margin-bottom: 4%;
+    text-align: center;
+    vertical-align: middle
+}
+
+.button {
+    padding: 8px 39px;
+    cursor: pointer;
+    font-size: 14px
+}
+
+#label-progressBar h3,
+#label-progressBar-forgotphone h3,
+#label-progressBarWait h3,
+.info {
+    font-size: 15px
+}
+
+.panel-content {
+    width: 450px;
+    height: 400px;
+    margin: -250px auto 0 -220px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+    overflow: visible;
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 4px 4px 3px #484848
+}
+
+.form #email {
+    float: left;
+    width: 100%
+}
+
+.progressBar {
+    display: none;
+    margin: 0 auto;
+    position: absolute
+}
+
+#label-progressBar,
+#label-progressBar-forgotphone,
+#label-progressBarWait {
+    margin: 2% 0
+}
+
+.info {
+    margin-bottom: 3%;
+    color: #ea7601
+}
+
+#forgotPhoneOtp,
+#rbadevice,
+#smsotp,
+#softokeninput {
+    display: block;
+    margin: 0;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: 13px
+}
+
+#forgotPhone-button,
+#smsotp-button,
+#softtoken-button {
+    margin-bottom: 8%
+}
+
+.mo2f_kba_textbox,
+input[type=number],
+textarea {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #c2c2c2;
+    box-shadow: 1px 1px 4px #ebebeb;
+    -moz-box-shadow: 1px 1px 4px #ebebeb;
+    -webkit-box-shadow: 1px 1px 4px #ebebeb;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    outline: 0;
+    width: 100%
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0
+}
+
+input[type=number] {
+    -moz-appearance: textfield
+}
+
+.mo2f_kba_textbox:focus,
+td>input:focus,
+textarea:focus {
+    border: 1px solid #2E8AB8
+}
+
+#authform {
+    margin-top: 1%;
+    width: 100%;
+    padding: 0 5%
+}
+
+#outofbandpush {
+    padding: 0 3%
+}
+
+#slider1>ul>li>img,
+#slider2>ul>li>img,
+#slider3>ul>li>img {
+    left: 0;
+    display: inline-block
+}
+
+#slider1,
+#slider2,
+#slider3 {
+    position: relative;
+    overflow: hidden;
+    display: none
+}
+
+#slider1>ul,
+#slider2>ul,
+#slider3>ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 200px;
+    list-style: none
+}
+
+#slider1>ul>li,
+#slider2>ul>li,
+#slider3>ul>li {
+    position: relative;
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 450px;
+    height: 250px;
+    text-align: center
+}
+
+.control_info,
+.control_next,
+.control_prev {
+    position: absolute;
+    z-index: 999;
+    cursor: pointer
+}
+
+.control_prev {
+    left: 0;
+    top: 45%;
+    transform: rotate(180deg)
+}
+
+.control_info {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    width: 30px;
+    background-color: #b7b3b3;
+    height: 30px;
+    padding: 1%;
+    top: 2%;
+    font-size: 13px;
+    left: 4%;
+    font-weight: 700;
+    font-family: "Trebuchet MS", Helvetica, sans-serif
+}
+
+.control_next {
+    right: 0;
+    top: 44%
+}
+
+.goBackPreview {
+    display: none;
+    font-size: 14px;
+    width: 100%;
+    margin: 4% 0
+}
+
+#slide {
+    cursor: pointer;
+    font-size: 14px
+}
+
+.mini-messages {
+    margin-bottom: 1%
+}
+
+.mini-messages li {
+    margin: 0 5%;
+    min-height: 23px!important;
+    padding: 2px 0 1px 8px!important;
+    font-weight: 700!important;
+    text-align: left;
+    font-size: 12px
+}
+
+.error-msg {
+    border: 1px solid #F16048!important;
+    color: #DF280A!important;
+    background: url("<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN).'adminhtml/default/default/images/error_msg_icon.gif'; ?>") 8px 5px no-repeat #FAEBE7!important;
+    border-radius: 2px
+}
+
+#error-cancel {
+    color: red;
+    font-size: 14px;
+    float: right;
+    margin-top: -2px
+}
+
+#slider1 img,
+#slider2 img,
+#slider3 img {
+    display: block;
+    margin: auto;
+    width: 100%
+}
+
+#progress_bar {
+    background: url(http://auth.miniorange.com/moas/images/ajax-loader4.gif) no-repeat;
+    display: block;
+    margin: 3% auto;
+    height: 140px;
+    width: 140px
+}
+
+#kba-button {
+    margin-top: 1%;
+    margin-bottom: 1%
+}
+
+#kbaSection {
+    margin-top: 2%
+}
