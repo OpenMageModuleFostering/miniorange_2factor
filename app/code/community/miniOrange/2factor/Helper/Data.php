@@ -1,7 +1,7 @@
 <?php
 class MiniOrange_2factor_Helper_Data extends Mage_Core_Helper_Abstract
 {
-	public $hostname = "https://test.miniorange.com";
+	public $hostname = "https://auth.miniorange.com";
 	
 	function adminExists($username){
 		$adminuser = Mage::getModel('admin/user');
