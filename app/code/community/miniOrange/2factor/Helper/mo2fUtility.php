@@ -25,12 +25,8 @@ class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 	
 	public $email;
 	public $phone;
-	public $hostname = "https://auth.miniorange.com";
+	public $hostname = "https://test.miniorange.com";
 	public $pluginName = 'Magento 2 Factor Authentication Plugin';
-	
-	function getHostURl(){
-		return $this->hostname;
-	}
 	
 	function check_customer($email){
 		$url 	= $this->hostname . '/moas/rest/customer/check-if-exists';
@@ -290,27 +286,6 @@ class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 		return true;
 	}
 	
-	function adminExists($username){
-		$adminuser = Mage::getModel('admin/user');
-		$adminuser->loadByUsername($username);
-		if ($adminuser->getId()){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	
-	function getAdmin($username){
-		$adminuser = Mage::getModel('admin/user');
-		$adminuser->loadByUsername($username);
-		if ($adminuser->getId()){
-			return $adminuser;
-		}
-		else{
-			return;
-		}
-	}
 	
 	function register_mobile($useremail,$id){
 		$url = $this->hostname . '/moas/api/auth/register-mobile';
@@ -318,10 +293,10 @@ class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 		$email = $useremail;
 		
 		/* The customer Key provided to you */
-		$customerKey = $this->getConfig('customerKey',$id);
+		$customerKey = Mage::helper('MiniOrange_2factor')->getConfig('customerKey',$id);
 	
 		/* The customer API Key provided to you */
-		$apiKey = $this->getConfig('apiKey',$id);
+		$apiKey = Mage::helper('MiniOrange_2factor')->getConfig('apiKey',$id);
 	
 		/* Current time in milliseconds since midnight, January 1, 1970 UTC. */
 		$currentTimeInMillis = round(microtime(true) * 1000);
@@ -413,76 +388,4 @@ class MiniOrange_2factor_Helper_mo2fUtility extends Mage_Core_Helper_Abstract{
 		return $content;
 	}
 	
-	/*Function to extract config stored in the database*/
-	function getConfig($config,$id){
-		switch($config){
-			case 'isEnabled':
-				$result = Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_Admin_enable');
-				break;
-			case 'email':
-				$result =  Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_email');
-				break;
-			case 'pass':
-				$result =  Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_pass');
-				break;
-			case 'customerKey':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_customer_key');
-				break;
-			case 'apiKey':
-				$result =  Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_api_key');
-				break;
-			case 'apiToken':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_token');
-				break;
-			case 'otp':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_show_otp');
-				break;	
-			case 'qrcode':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_show_qr');
-				break;
-			case 'configure':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_show_configure');
-				break;
-			case 'validated':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_validated');
-				break;
-			case 'login':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_login');
-				break;
-			case 'mainAdmin':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_admin_registered');
-				break;
-			case 'downloaded':
-				$result =   Mage::getModel('admin/user')->load($id)->getData('miniorange_2factor_downloaded_app');
-				break;
-			default:
-				return;
-				break;
-		}
-			return $result;
-	}
-	
-	/*Function to show his partial registered email to user*/
-	function showEmail($id){
-			$email = $this->getConfig('email',$id);
-			$emailsize = strlen($email);
-			$partialemail = substr($email,0,1);
-			$temp = strrpos($email,"@");
-			$endemail = substr($email,$temp-1,$emailsize);
-			for($i=1;$i<$temp;$i++){
-				$partialemail = $partialemail . 'x';
-			}
-			$showemail = $partialemail . $endemail;
-		
-		return $showemail;
-	}
-	
-	/*Function to check if cURL is enabled*/
-	function is_curl_installed() {
-		if  (in_array  ('curl', get_loaded_extensions())) {
-			return 1;
-		} else 
-			return 0;
-	}
-
 }?>

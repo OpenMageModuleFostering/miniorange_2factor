@@ -9,9 +9,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="http://miniorange.com/js/intlTelInput.min.js"></script>
 		<script>
-			var $m = jQuery.noConflict();
-$m(document).ready(function() {
-		$m("#phone").intlTelInput();$email="<?php echo $this->getConfig('email')?>";$showotp="<?php echo $this->getConfig('otp')?>";$showqr="<?php echo $this->getConfig('qrcode')?>";$configure="<?php echo $this->getConfig('configure')?>";$showlogin="<?php echo $this->getConfig('login')?>";$validated="<?php echo $this->getConfig('validated')?>";$downloaded="<?php echo $this->getConfig('downloaded')?>";$OTPsent="<?php echo Mage::getSingleton('admin/session')->getOTPsent();?>";$showloginsettings="<?php echo Mage::getSingleton('admin/session')->getshowLoginSettings(); ?>";$success='<?php echo Mage::getSingleton('core/session')->getSuccessMessage(); ?>';$error='<?php echo Mage::getSingleton('core/session')->getErrorMessage(); ?>';if($email==""){if($OTPsent!=""){$error="An error occured while saving your registration details. Please Flush you Magento Cache. [ <a id='preview9' href='#slider6'>Click Here</a> for a preview. ]"}}
+		var $m = jQuery.noConflict();
+		$m(document).ready(function() {
+		$m("#phone").intlTelInput();$m("#query_phone").intlTelInput();$m("#additional_phone").intlTelInput();$email="<?php echo $this->getConfig('email')?>";$showotp="<?php echo $this->getConfig('otp')?>";$showqr="<?php echo $this->getConfig('qrcode')?>";$configure="<?php echo $this->getConfig('configure')?>";$showlogin="<?php echo $this->getConfig('login')?>";$validated="<?php echo $this->getConfig('validated')?>";$downloaded="<?php echo $this->getConfig('downloaded')?>";$OTPsent="<?php echo Mage::getSingleton('admin/session')->getOTPsent();?>";$showloginsettings="<?php echo Mage::getSingleton('admin/session')->getshowLoginSettings(); ?>";$success='<?php echo Mage::getSingleton('core/session')->getSuccessMessage(); ?>';$error='<?php echo Mage::getSingleton('core/session')->getErrorMessage(); ?>';if($email==""){if($OTPsent!=""){$error="An error occured while saving your registration details. Please Flush you Magento Cache. [ <a id='preview9' href='#slider6'>Click Here</a> for a preview. ]"}}
 		if($error!=""){$m(".error-msg span").empty();$m(".error-msg span").append($error);$m(".mini-messages li").css("display","block");$m(".success-msg").css("display","none");}
 		if($success!=""){$m(".success-msg span").empty();$m(".success-msg span").append($success);$m(".mini-messages li").css("display","block");$m(".error-msg").css("display","none");}
 		if($showotp==0&&$email!=""){$m("#account_setup").css("display","none");if($configure==1){$m("#configuremobile").css("display","block");voiddisplay("#configuremobile");setactive('configure_mobile');}else if($showloginsettings==1){$m("#login_settings").css("display","block");voiddisplay("#loginsettings");setactive('login_settings');$m("#displayQrCode").hide();$m("#configureMobileButton").css("display","block");}else{$m("#user_profile").css("display","block");voiddisplay("#userprofile");setactive('user_profile');$m("#displayQrCode").hide();$m("#configureMobileButton").css("display","block");}}else{if($showlogin==1){$m("#account_setup").css("display","block");$m("#already_registered").css("display","block");$m("#register_miniorange").css("display","none");voiddisplay("#accountsetup");$m("#user_profile").css("display","none");setactive('account_setup');}else if($validated==0&&$validated!=""){$m("#account_setup").css("display","block");$m("#additional_admin").css("display","block");$m("#register_miniorange").css("display","none");voiddisplay("#accountsetup");$m("#user_profile").css("display","none");setactive('account_setup');}else{$m("#account_setup").css("display","block");$m("#already_registered").css("display","none");$m("#register_miniorange").css("display","block");voiddisplay("#accountsetup");$m("#user_profile").css("display","none");setactive('account_setup');}}
@@ -145,7 +145,7 @@ $m(document).ready(function() {
 						<table class="table">
 							<tr>
 							<td><b><font color="#FF0000">*</font>Email:</b></td>
-							<td><input class="" type="email" name="additional_email"  autofocus="true" required placeholder="person@example.com" style="width:400px;" value="<?php echo $current_user->user_email;?>"/></td>
+							<td><input class="" type="email" name="additional_email"  autofocus="true" required placeholder="person@example.com" style="width:400px;" value=""/></td>
 							</tr>
 							<tr>
 							<td><b><font color="#FF0000">*</font>Phone number:</b></td>
@@ -255,12 +255,14 @@ $m(document).ready(function() {
 				<div class="page" id="loginsettings">
 					<div class="mo2f_table_layout">
 						<div><h3>Login Settings</h3><hr></div>
-						<form name="f"  method="post" action="<?php echo $this->getadminurl('*/*/enableAdmin') ?>">
-							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+						<form name="f"  method="post" action="<?php echo $this->getadminurl('*/*/saveLoginSettings') ?>">
 							<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
 							<input type="checkbox" id="mo2f_adminrole_activation" name="adminrole_activation" value="1" <?php echo $this->isEnabled(); ?> /><b>Enable 2-Factor for admins.</b>
 							<div style="margin-left:4%;"><b>Note:</b> This option is checked by default. It will enable 2-Factor only for admins, other users can still login with their password.<p>[ <a id="preview4" href="#slider2">Click Here</a> for a preview. ]</p></div>
 							<br>
+							<!--<input type="checkbox" id="mo2f_customer_activation" name="customer_activation" value="1" <?php echo $this->isCustomerEnabled(); ?> /><b>Enable 2-Factor for Customers.</b>
+							<div style="margin-left:4%;"><b>Note:</b> This will enable 2-Factor for your customers.</div>
+							<br>-->
 							<div class="button-align"><input type="submit" name="submit" value="Save Settings" class="button button-primary button-large" /></div>
 						</form>
 					</div>
@@ -278,7 +280,7 @@ $m(document).ready(function() {
 									  <div  class="control_next"><img src='<?php echo $this->getImage('arrow') ?>' /></div>
 									  <div  class="control_prev"><img src='<?php echo $this->getImage('arrow') ?>' /></div>	  
 									  <ul>
-										<li><img  style="height: 90%;" src='<?php echo $this->getImage('register') ?>' /></li>
+										<li><img  style="height: 87%;" src='<?php echo $this->getImage('register') ?>' /></li>
 										<li><img  style="width: 90%; position: relative; top: 25%;" src='<?php echo $this->getImage('otp') ?>' /></li>
 										<li><img  style="width: 90%; position: relative;top: 15%;" src='<?php echo $this->getImage('clickconfiguremobile') ?>' /></li>
 										<li><img  style="height: 75%; position: relative; top: 12%;" src='<?php echo $this->getImage('scanqr') ?>' /></li>
@@ -482,7 +484,7 @@ $m(document).ready(function() {
 										</td>
 									</tr>
 									<tr><td>
-										<input type="text" class="mo2f_table_textbox" name="query_phone" id="query_phone" title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/>
+										<input type="text" class="mo2f_table_textbox" name="query_phone" id="query_phone" title="Phone with country code eg. +1xxxxxxxxxx" placeholder="Phone with country code eg. +1xxxxxxxxxx" value="<?php echo $this->getConfig('phone')?>" pattern="[\+]?[0-9]{1,4}\s?[0-9]{10}"/>
 										</td>
 									</tr>
 									<tr>
