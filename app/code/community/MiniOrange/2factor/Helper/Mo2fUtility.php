@@ -458,6 +458,7 @@ class MiniOrange_2factor_Helper_Mo2fUtility extends Mage_Core_Helper_Abstract{
 		$authorizationHeader = "Authorization: " . $hashValue;
 		
 		$fields = array(
+			'customerKey' => $customerKey,
 			'username' => $email
 		);
 		

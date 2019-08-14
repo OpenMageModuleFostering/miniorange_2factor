@@ -87,7 +87,11 @@ class MiniOrange_2factor_Customer_InlineRegistrationController extends Mage_Core
 					$session->setShowInlineTwoFactor(1);
 					$this->redirect("twofactorauth/InlineRegistration/index");
 				}else{ $this->setInlineError('There was an Error while creating End User!'); }
-			}else{ $this->setInlineError('There was an unknown error!'); }
+			}else if(strcasecmp($check_user['status'], 'USER_FOUND_UNDER_DIFFERENT_CUSTOMER') == 0){
+				$this->setInlineError('The User already exists under another Admin.');
+			}else{ 
+				$this->setInlineError('User limit exceeded. Please upgrade your license to add more users.');
+			}
 		}else{ $this->setInlineError('There was an unknown error!'); }
 	}
 	
@@ -167,8 +171,12 @@ class MiniOrange_2factor_Customer_InlineRegistrationController extends Mage_Core
 			$content = json_decode($helper2->validate_otp_token( 'EMAIL', null, $session->getInlineTxtId() ,$params['setup-otp'],$helper1->getConfig('customerKey',$id), $helper1->getConfig('apiKey',$id)),true);
 			if(strcasecmp($content['status'], 'SUCCESS') == 0){
 				$this->checkEndUser($session->getInlineEmail());
-			}else{ $this->setInlineError('Invalid OTP. Please enter the correct OTP'); }
-		}else{ $this->sendValidationOTP($session->getInlineEmail()); }
+			}else{ 
+				$this->setInlineError('Invalid OTP. Please enter the correct OTP'); 
+			}
+		}else{ 
+			$this->sendValidationOTP($session->getInlineEmail()); 
+		}
 	}
 	
 	public function chooseTwoFactorAction(){

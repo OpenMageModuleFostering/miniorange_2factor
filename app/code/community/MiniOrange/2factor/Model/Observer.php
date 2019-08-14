@@ -216,16 +216,25 @@ class MiniOrange_2factor_Model_Observer
 						$id = Mage::getModel('admin/user')->login($session->getLoginUsername(),$session->getLoginPassword())->getUserId();
 						$this->sendValidationOTP($request->getPost('setup-email'),$session,$id);
 					}
-				}else if($request->getPost('setup-otp') && $session->getLoginUsername()){
+				}else if($request->getPost('setup-otp') || $session->getInlineEmail()){
 					if(!$session->getShowInlineTwoFactor()){
-						if(strcmp($request->getPost('submit'), 'Validate OTP')==0){
+						if(strcmp($request->getPost('submit'), 'Validate OTP')==0 && $session->getInlineTxtId() ){
 							$content = json_decode($helper->validate_otp_token( 'EMAIL', null, $session->getInlineTxtId() , $request->getPost('setup-otp') ,  $data->getConfig('customerKey',$id), $data->getConfig('apiKey',$id)),true);
 							if(strcmp($content['status'], 'SUCCESS') == 0){
+								$session->unsInlineTxtId();
+								$session->setUserCheck(1);
 								$this->checkEndUser($session->getInlineEmail(),$session);
-							}else{ $session->setminiError('Invalid OTP. Please enter the correct OTP'); }
+							}else{ 
+								$session->setminiError('Invalid OTP. Please enter the correct OTP'); 
+							}
 						}else{ 
-							$id = Mage::getModel('admin/user')->login($session->getLoginUsername(),$session->getLoginPassword())->getUserId();
-							$this->sendValidationOTP($session->getInlineEmail(),$session,$id);
+							if(!$session->getResendOTPsent() && !$session->getUserCheck()){
+								$id = Mage::getModel('admin/user')->login($session->getLoginUsername(),$session->getLoginPassword())->getUserId();
+								$this->sendValidationOTP($session->getInlineEmail(),$session,$id);
+							}else{
+								$session->unsUserCheck(1);
+								$session->unsResendOTPsent();
+							}
 						}
 					}
 				}else if($request->getPost('twofactor') && $session->getLoginUsername()){
@@ -649,7 +658,11 @@ class MiniOrange_2factor_Model_Observer
 						}else{
 							$session->setminiError('There was an Error while creating End User!');
 						}
-				}else{ $session->setminiError('The User already exists under another Admin.'); }
+			}else if(strcasecmp($check_user['status'], 'USER_FOUND_UNDER_DIFFERENT_CUSTOMER') == 0){
+				$session->setminiError('The User already exists under another Admin.',"ERROR");
+			}else{ 
+				$session->setminiError('User limit exceeded. Please upgrade your license to add more users.',"ERROR"); 
+			}
 		}else{ $session->setminiError('There was an unknown error! Contact Admin.'); }
 	}
 	
@@ -678,6 +691,8 @@ class MiniOrange_2factor_Model_Observer
 				$session->setInlineValidateStatus('STARTED');
 				$session->setInlineTxtId($content['txId']);
 				$session->setInlineEmail($email);
+				$session->unsminiError();
+				$session->setResendOTPsent(1);
 				$session->setShowInlineValidate(1);
 			}else{  $session->setminiError('An error occurred while sending OTP to '.$email.'.');  }
 	}

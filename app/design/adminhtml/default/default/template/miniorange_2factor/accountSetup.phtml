@@ -129,7 +129,7 @@
 		if(!Mage::getSingleton('admin/session')->getShowOTP()){ 
 ?>
 			<div class="additional_user">
-				<form id="additional_admin" name="f" method="post" action="<?php echo $this->getadminurl('additionalAdmin') ?>">
+				<form id="additional_admin" name="f" method="post" action="<?php echo $this->getadminurl('*/*/additionalAdmin') ?>">
 					<input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
 					<div class="login_miniorange">
 						<h3>LOGIN WITH MINIORANGE</h3><hr>

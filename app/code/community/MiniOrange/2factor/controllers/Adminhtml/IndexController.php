@@ -30,7 +30,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			$pass = $session->getaddPass();
 			if(strcmp($otp,"")!=0){
 				$transactionId  =  $session->getMytextid();
-				$content = json_decode($customer->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $customer->getConfig('customerKey',$id), $customer->getConfig('apiKey',$id)),true);
+				$content = json_decode($customer->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $helper->getConfig('customerKey',$id), $helper->getConfig('apiKey',$id)),true);
 				if(strcasecmp($content['status'], 'SUCCESS') == 0) { //OTP validated and generate QRCode
 							$this->checkEndUser($email,$phone);
 				}
@@ -124,7 +124,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			if($helper->is_curl_installed()){
 				$email = $params['additional_email'];
 				$phone = $params['additional_phone'];
-				$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); 
+				$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getConfig('customerKey'),$helper->getConfig('apiKey')), true); 
 				if(strcasecmp($content['status'], 'SUCCESS') == 0){
 					//$admin = $session->getUser();
 					$id = $this->getId();
@@ -834,7 +834,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 			//$admin = $session->getUser();
 			$id = $this->getId();
 			$email =$session->getaddAdmin();
-			$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getdefaultCustomerKey(),$helper->getdefaultApiKey()), true); //send otp for verification
+			$content = json_decode($customer->send_otp_token($email,'EMAIL',$helper->getConfig('customerKey',$id),$helper->getConfig('apiKey',$id)), true); //send otp for verification
 			if(strcasecmp($content['status'], 'SUCCESS') == 0){
 				$session->setMytextid($content['txId']);
 				$session->setShowOTP(1);
@@ -971,7 +971,7 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 		$customerAdmin = $session->getUser();
 		$id = $customerAdmin->getId();
 		$check_user = json_decode($admin->mo_check_user_already_exist($email,$helper->getConfig('customerKey'),$helper->getConfig('apiKey')),true);
-		if(json_last_error() == JSON_ERROR_NONE){	
+		if(json_last_error() == JSON_ERROR_NONE){
 			if(strcasecmp($check_user['status'], 'USER_FOUND') == 0){
 					$this->saveConfig('miniorange_2factor_email',$email,$id);
 					$this->saveConfig('miniorange_2factor_phone',$phone,$id);
@@ -985,25 +985,28 @@ class MiniOrange_2factor_Adminhtml_IndexController extends Mage_Adminhtml_Contro
 					$this->redirect("miniorange_2factor/adminhtml_index/index");			
 			}else if(strcasecmp($check_user['status'], 'USER_NOT_FOUND') == 0){
 					$content = json_decode($admin->mo_create_user($email,$helper->getConfig('customerKey'),$helper->getConfig('apiKey'),$customerAdmin), true);
-						if(strcasecmp($content['status'], 'SUCCESS') == 0) {
-							$this->saveConfig('miniorange_2factor_email',$email,$id);
-							$this->saveConfig('miniorange_2factor_phone',$phone,$id);
-							$session->unsaddAdmin();
-							$session->unsaddPhone();
-							$session->unsaddPass();
-							$session->unsShowOTP();
-							$this->saveTwoFactorType("OUT OF BAND EMAIL");
-							$this->saveConfig('miniorange_2factor_Admin_enable',1,$id);
-							$this->displayMessage('Registration Successful. EMAIL VERIFICATION has been set as your second factor. You can change your second factor below.',"SUCCESS");
-							$this->redirect("miniorange_2factor/adminhtml_index/index");
-						}else{
-							$this->displayMessage('There was an Error while creating End User!',"ERROR");
-							$this->redirect("miniorange_2factor/adminhtml_index/index");
-						}
-				}else{
-						$this->displayMessage('The User already exists under another Admin.',"ERROR");
-						$this->redirect("miniorange_2factor/adminhtml_index/index");		
-				}
+					if(strcasecmp($content['status'], 'SUCCESS') == 0) {
+						$this->saveConfig('miniorange_2factor_email',$email,$id);
+						$this->saveConfig('miniorange_2factor_phone',$phone,$id);
+						$session->unsaddAdmin();
+						$session->unsaddPhone();
+						$session->unsaddPass();
+						$session->unsShowOTP();
+						$this->saveTwoFactorType("OUT OF BAND EMAIL");
+						$this->saveConfig('miniorange_2factor_Admin_enable',1,$id);
+						$this->displayMessage('Registration Successful. EMAIL VERIFICATION has been set as your second factor. You can change your second factor below.',"SUCCESS");
+						$this->redirect("miniorange_2factor/adminhtml_index/index");
+					}else{
+						$this->displayMessage('There was an Error while creating End User!',"ERROR");
+						$this->redirect("miniorange_2factor/adminhtml_index/index");
+					}
+			}else if(strcasecmp($check_user['status'], 'USER_FOUND_UNDER_DIFFERENT_CUSTOMER') == 0){
+				$this->displayMessage('The User already exists under another Admin.',"ERROR");
+				$this->redirect("miniorange_2factor/adminhtml_index/index");
+			}else{	
+				$this->displayMessage('User limit exceeded. Please upgrade your license to add more users.',"ERROR");
+				$this->redirect("miniorange_2factor/adminhtml_index/index");		
+			}
 		}else{
 				$this->displayMessage('There was an unknown error! Contact Admin.',"ERROR");
 				$this->redirect("miniorange_2factor/adminhtml_index/index");				

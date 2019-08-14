@@ -36,7 +36,7 @@
 								<br/><input type="submit" value="<?php echo Mage::helper('adminhtml')->__('Get Started') ?>" /><br/>
 							</form>
 						<?php }else if(Mage::getSingleton('adminhtml/session')->getShowInlineValidate()){?>
-							An OTP has been sent to <b><?php echo Mage::getSingleton('adminhtml/session')->getInlineEmail() ?></b>. Please enter the OTP below to verify your email. If you didn't get the email, please check your <b>SPAM folder</b>.
+							<div>An OTP has been sent to <b><?php echo Mage::getSingleton('adminhtml/session')->getInlineEmail() ?></b>. Please enter the OTP below to verify your email. If you didn't get the email, please check your <b>SPAM folder</b>.</div>
 							<form name="f" method="post" action="" id="" autocomplete="off">
 							<input style="margin:5% 0 3% 0;width:80%"; type="number" name="setup-otp" autofocus="true" id="setup-otp" title="One Time Passcode" placeholder="Enter OTP sent to <?php echo  Mage::getSingleton('adminhtml/session')->getInlineEmail()?>" pattern="[0-9]{4,6}"/><br/>
 							<br/><input type="submit" name="submit" value="<?php echo Mage::helper('adminhtml')->__('Validate OTP') ?>" />

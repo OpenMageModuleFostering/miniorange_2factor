@@ -7,7 +7,7 @@
         <!-- This must exactly match the namespace and module's folder names, with directory separators replaced by underscores -->
         <MiniOrange_2factor>
             <!-- The version of our module -->
-            <version>1.1.2</version>
+            <version>1.2.0</version>
         </MiniOrange_2factor>
     </modules>
 	<!-- We are making changes to the frontend -->

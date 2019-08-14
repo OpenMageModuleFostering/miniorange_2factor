@@ -359,7 +359,7 @@ class MiniOrange_2factor_Customer_IndexController extends Mage_Core_Controller_F
 		if($helper1->is_curl_installed()){
 			$email = $params['additional_email'];
 			$phone = $params['additional_phone'];
-			$content = json_decode($helper2->send_otp_token($email,'EMAIL',$helper1->getdefaultCustomerKey(),$helper1->getdefaultApiKey()), true); 
+			$content = json_decode($helper2->send_otp_token($email,'EMAIL',$helper1->getConfig('customerKey',$id),$helper1->getConfig('apiKey',$id)), true); 
 			if(strcasecmp($content['status'], 'SUCCESS') == 0){
 				$id = $this->getId();
 				$session->setOTPsent(1);
@@ -389,7 +389,7 @@ class MiniOrange_2factor_Customer_IndexController extends Mage_Core_Controller_F
 			$otp = $params['otp'];
 			if(strcmp($otp,"")!=0){
 				$transactionId  =  $session->getMytextid();
-				$content = json_decode($helper2->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $helper1->getdefaultCustomerKey(), $helper1->getdefaultApiKey()),true);
+				$content = json_decode($helper2->validate_otp_token( 'EMAIL', null, $transactionId , $otp , $helper1->getConfig('customerKey',$id),$helper1->getConfig('apiKey',$id)),true);
 					if(strcasecmp($content['status'], 'SUCCESS') == 0) { //OTP validated and generate QRCode
 									$this->checkEndUser();
 					}
@@ -482,7 +482,7 @@ class MiniOrange_2factor_Customer_IndexController extends Mage_Core_Controller_F
 		$session = $this->getSession();
 		if($helper1->is_curl_installed()){
 			$email = $session->getUser();
-			$content = json_decode($helper2->send_otp_token($email,'EMAIL',$helper1->getdefaultCustomerKey(),$helper1->getdefaultApiKey()), true); //send otp for verification
+			$content = json_decode($helper2->send_otp_token($email,'EMAIL',$helper1->getConfig('customerKey',$id),$helper1->getConfig('apiKey',$id)), true); //send otp for verification
 			if(strcasecmp($content['status'], 'SUCCESS') == 0){
 				$this->getId();
 				$session->setMytextid($content['txId']);
@@ -1195,13 +1195,16 @@ public function transactionTimeOutAction(){
 						$helper1->displayMessage('There was an Error while creating End User!',"ERROR");
 						$this->redirect("twofactorauth/Index/configureTwoFactorPage");
 					}
-				}else{
-						$helper1->displayMessage('There was an unknown error!',"ERROR");
-						$this->redirect("twofactorauth/Index/configureTwoFactorPage");		
-				}
+			}else if(strcasecmp($check_user['status'], 'USER_FOUND_UNDER_DIFFERENT_CUSTOMER') == 0){
+				$helper1->displayMessage('The User already exists under another Admin.',"ERROR");
+				$this->redirect("twofactorauth/Index/configureTwoFactorPage");
+			}else{
+					$helper1->displayMessage('User limit exceeded. Please upgrade your license to add more users.',"ERROR");
+					$this->redirect("twofactorauth/Index/configureTwoFactorPage");					
+			}
 		}else{
 				$helper1->displayMessage('There was an unknown error!',"ERROR");
-				$this->redirect("twofactorauth/Index/configureTwoFactorPage");					
+				$this->redirect("twofactorauth/Index/configureTwoFactorPage");		
 		}
 	}				
 	
