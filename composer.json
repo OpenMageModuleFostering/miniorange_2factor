@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/miniOrange_2factor",
+    "name": "OpenMageModuleFostering\/miniOrange_2factor",
     "type": "magento-module",
     "license": "GNU-General-Public-License-(GPL)",
     "homepage": "",
     "description": "Effortless Two-Factor Authentication Setup. Supports Email, SMS, Qr, Google Authenticator, etc.",
     "authors": [
-    {
-        "name": "miniOrange inc.",
-        "email": "info@miniorange.com"
-    }
-],
+        {
+            "name": "miniOrange inc.",
+            "email": "info@miniorange.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
